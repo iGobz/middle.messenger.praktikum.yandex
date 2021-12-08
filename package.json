@@ -2,13 +2,24 @@
   "name": "sprint_1",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
+    "dev": "rm -rf dist/* && parcel src/*.html --no-cache --no-source-maps",
+    "build": "parcel build src/*.html",
+    "start": "node server.js"
   },
-  "author": "",
+  "engines": {
+    "node": ">=12"
+  },
+  "author": "Ivan Kuznetsov",
   "license": "ISC",
   "devDependencies": {
-    "handlebars": "^4.7.7",
-    "parcel-bundler": "^1.12.5"
+    "@parcel/resolver-glob": "^2.0.1",
+    "@parcel/transformer-sass": "^2.0.1",
+    "autoprefixer": "^10.4.0",
+    "express": "^4.17.1",
+    "parcel": "^2.0.1",
+    "parcel-transformer-hbs": "^1.0.4",
+    "postcss": "^8.4.1",
+    "sass": "^1.43.5"
   }
 }

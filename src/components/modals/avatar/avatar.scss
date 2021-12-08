@@ -1,0 +1,29 @@
+.avatar-modal-header {
+    font-family: $font-family;
+    font-style: normal;
+    font-size: 15px;
+    line-height: 20px;
+    text-align: center;
+    color: #1e1e1e;
+    // margin: 30px;
+}
+
+.avatar-modal-choose-file-container {
+    display: flex;
+    height: 100%;
+}
+.avatar-modal-choose-file {
+    margin: auto;
+
+    font-family: $font-family;
+    font-style: normal;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    text-decoration-line: underline;
+    color: #3369f3;
+}
+
+.avatar-modal-change-avatar {
+    @extend .signup-form-button-primary;
+}
