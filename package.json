@@ -4,14 +4,22 @@
   "description": "",
   "scripts": {
     "dev": "rm -rf dist/* && parcel src/*.html --no-cache --no-source-maps",
-    "build": "parcel build src/*.html",
+    "build": "parcel build src/*.html --target browser --dist-dir dist",
     "start": "node server.js"
   },
   "engines": {
     "node": ">=12"
   },
+  "targets": {
+    "browser": {
+      "includeNodeModules": {}
+    }
+  },
   "author": "Ivan Kuznetsov",
   "license": "ISC",
+  "dependencies": {
+    "handlebars": "^4.7.7"
+  },
   "devDependencies": {
     "@parcel/resolver-glob": "^2.0.1",
     "@parcel/transformer-sass": "^2.0.1",
