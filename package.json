@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "rm -rf dist/* && parcel src/*.html --no-cache --no-source-maps",
     "build": "rm -rf dist/* && parcel build src/*.html --target app --dist-dir dist --public-url ./ --no-source-maps --no-cache --no-optimize",
-    "start": "node server.js"
+    "start": "npm run build && node server.js"
   },
   "engines": {
     "node": ">=12"
