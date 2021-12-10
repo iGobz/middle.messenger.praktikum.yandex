@@ -4,15 +4,17 @@
   "description": "",
   "scripts": {
     "dev": "rm -rf dist/* && parcel src/*.html --no-cache --no-source-maps",
-    "build": "parcel build src/*.html --target browser --dist-dir dist",
+    "build": "rm -rf dist/* && parcel build src/*.html --target app --dist-dir dist --public-url ./ --no-source-maps --no-cache --no-optimize",
     "start": "node server.js"
   },
   "engines": {
     "node": ">=12"
   },
   "targets": {
-    "browser": {
-      "includeNodeModules": {}
+    "app": {
+      "context": "browser",
+      "includeNodeModules": true,
+      "outputFormat": "esmodule"
     }
   },
   "author": "Ivan Kuznetsov",
