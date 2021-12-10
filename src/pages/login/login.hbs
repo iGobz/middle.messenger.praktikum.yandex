@@ -1,0 +1,18 @@
+<div class="{{ styles.auth-popup }}">
+    <div class={{ styles.auth-container }}>
+        <div class={{ styles.auth-header }}>Вход</div>
+        <form class={{ styles.form }}>
+            {{> label classes=(concat styles.label styles.form-label) text="Логин" }}
+            {{> input type="text" classes=(concat styles.input styles.input-login) name="login" }}
+            {{> label classes=(concat styles.label styles.form-label) text="Пароль" }}
+            {{> input type="password" classes=(concat styles.input styles.input-password) name="password" }}
+            <div class="{{ styles.form-login-spacer }}">&nbsp;</div>
+            <div class="form-buttons">
+                {{> button classes=(concat styles.button styles.login-form-button-primary)
+                text="Авторизоваться" }}
+                {{> button classes=(concat styles.button styles.login-form-button-secondary)
+                text="Нет аккаунта?" }}
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+.chat-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    flex-basis: 100%;
+}
+
+.chat-left-container {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 310px;
+    background-color: #fbfbfb;
+
+    display: flex;
+    flex-direction: column;    
+}
+
+.chat-infos-container {
+    padding: 0 10px;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+
+
+.chat-right-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 1;
+    background-color: #ffffff;
+
+    border-left: 1px solid #eaeaea;
+}
+.chat-stub {
+    margin: auto;
+    font-family: $font-family;
+    font-style: normal;
+    font-size: 12px;
+    line-height: 12px;
+    text-align: center;
+    color: #999999;
+}
+
+.link-profile-open {
+    font-family: $font-family;
+    font-style: normal;
+    font-size: 12px;
+    line-height: 12px;
+    text-align: right;
+    color: #999999;
+    padding: 21px 10px;
+}
+
+.search-container {
+    margin: 0 10px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.search-container-placeholder {
+
+    display: inline-block;
+    font-family: $font-family;
+    font-style: normal;
+    font-size: 12px;
+    line-height: 32px;
+    color: #999999;
+    position: absolute;
+    left: 100px;
+    height: 32px;
+    pointer-events: none;
+}
+
+.search-icon {
+    margin: auto;
+    height: 10px;
+    opacity: 50%;
+}
+
+.input-search-box {
+    border: 0;
+    padding: 10px;
+    background-color: #efefef;
+    border-radius: 5px;
+    height: 32px;
+    width: 290px;
+}
+
+.input-search-box:not(:placeholder-shown) ~ .search-container-placeholder,
+.input-search-box:focus ~ .search-container-placeholder {
+    display: none;
+}

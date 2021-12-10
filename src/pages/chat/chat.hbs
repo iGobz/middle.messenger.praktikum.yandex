@@ -1,0 +1,25 @@
+<div class={{ styles.chat-container }}>
+    <div class={{ styles.chat-left-container }}>
+        <div class="{{ styles.link-profile-open }}"><a>Профиль <img src={{ icons.profilearrow-svg }}></a></div>
+        <div class="{{ styles.search-container }}">
+            {{> input type="text" classes=(concat styles.input styles.input-search-box) name="search" placeholder=" " }}
+            <div class={{ styles.search-container-placeholder }}>
+                <img class={{ styles.search-icon }} src={{ icons.search-svg }}> Поиск
+            </div>
+        </div>
+        <div class="{{ styles.chat-infos-container }}">
+            {{> chat-info }}
+            {{> chat-info }}
+            {{> chat-info }}
+            {{> chat-info }}
+            {{> chat-info }}
+            {{> chat-info }}
+            {{> chat-info }}
+            {{> chat-info }}
+            {{> chat-info }}
+        </div>
+    </div>
+    <div class={{ styles.chat-right-container }}>
+        <p class={{ styles.chat-stub }}>Выберите чат чтобы отправить сообщение</p>
+    </div>
+</div>
