@@ -34,11 +34,12 @@ document.addEventListener('click', function (e) {
 
     if (utils.hasClass(e, styles['login-form-button-secondary'])) {
         document.querySelector('main').innerHTML = pages.signupTemplate({ styles });
-    } else if (utils.hasClass(e, styles['signup-form-button-secondary'])) {
+    } else if (utils.hasClass(e, styles['signup-form-button-secondary']) ||
+               utils.hasClass(e, styles['profile-info-link-exit'])
+    ) {
         document.querySelector('main').innerHTML = pages.loginTemplate({ styles });
     } else if (utils.hasClass(e, styles['login-form-button-primary']) ||
-        utils.hasClass(e, styles['profile-return']) ||
-        utils.hasClass(e, styles['profile-info-link-exit'])) {
+        utils.hasClass(e, styles['profile-return'])) {
         document.querySelector('main').innerHTML = pages.chatTemplate({ styles, images, icons });
     } else if (utils.hasClass(e, styles['chat-info-container'])) {
         document.querySelector('.' + styles['chat-right-container']).innerHTML = pages.conversationTemplate({ styles, images, icons });
