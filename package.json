@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "dev": "rm -rf dist/* && parcel src/*.html --no-cache --no-source-maps",
-    "build": "rm -rf dist/* && parcel build src/*.html --target app --dist-dir dist --public-url ./ --no-source-maps --no-cache --no-optimize",
+    "build": "parcel build src/*.html --target app --dist-dir dist --public-url ./ --no-source-maps --no-cache --no-optimize",
     "start": "npm run build && node server.js"
   },
   "engines": {
@@ -23,6 +23,7 @@
     "handlebars": "^4.7.7"
   },
   "devDependencies": {
+    "@parcel/config-default": "^2.0.1",
     "@parcel/resolver-glob": "^2.0.1",
     "@parcel/transformer-sass": "^2.0.1",
     "autoprefixer": "^10.4.0",
