@@ -41,3 +41,8 @@ https://www.figma.com/file/2cCGHvnNzdfwK6c4mBBDmj/%D0%AF.%D0%A7%D0%B0%D1%82?node
 - Добавлена валидация полей форм
 - Добавлены линтинг кода и стилей
 - Вывод данных форм в консоль
+=======
+##
+
+Pull request
+[#2](https://github.com/iGobz/middle.messenger.praktikum.yandex/pull/2)
