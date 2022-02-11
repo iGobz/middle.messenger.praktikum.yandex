@@ -1,11 +1,13 @@
 {
-  "name": "sprint_1",
+  "name": "sprint_2",
   "version": "1.0.0",
   "description": "",
   "scripts": {
     "dev": "rm -rf dist/* && parcel src/*.html --no-cache --no-source-maps",
-    "build": "rm -rf dist/* && parcel build src/*.html --target app --dist-dir dist --public-url ./ --no-source-maps --no-cache --no-optimize",
-    "start": "npm run build && node server.js"
+    "build": "parcel build src/*.html --target app --dist-dir dist --public-url ./ --no-source-maps --no-cache --no-optimize",
+    "start": "npm run build && node server.ts",
+    "eslint": "eslint . --ext .ts,.js",
+    "eslint:fix": "eslint . --ext .ts,.js --fix"
   },
   "engines": {
     "node": ">=12"
@@ -20,16 +22,32 @@
   "author": "Ivan Kuznetsov",
   "license": "ISC",
   "dependencies": {
-    "handlebars": "^4.7.7"
+    "handlebars": "^4.7.7",
+    "uuid": "^8.3.2",
+    "express": "^4.17.2"
   },
   "devDependencies": {
-    "@parcel/resolver-glob": "^2.0.1",
-    "@parcel/transformer-sass": "^2.0.1",
-    "autoprefixer": "^10.4.0",
-    "express": "^4.17.1",
-    "parcel": "^2.0.1",
+    "@parcel/config-default": "^2.2.1",
+    "@parcel/resolver-glob": "^2.2.1",
+    "@parcel/transformer-sass": "^2.2.1",
+    "@types/uuid": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^5.11.0",
+    "@typescript-eslint/parser": "^5.10.0",
+    "autoprefixer": "^10.4.2",
+    "eslint": "^8.7.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^16.1.0",
+    "eslint-plugin-import": "^2.25.4",
+    "express": "^4.17.2",
+    "parcel": "^2.2.1",
+    "parcel-plugin-handlebars-precompile": "^1.0.2",
     "parcel-transformer-hbs": "^1.0.4",
-    "postcss": "^8.4.1",
-    "sass": "^1.43.5"
+    "postcss": "^8.4.5",
+    "sass": "^1.49.0",
+    "stylelint": "^14.2.0",
+    "stylelint-config-standard": "^25.0.0",
+    "typescript": "^4.5.5",
+    "typescript-plugin-css-modules": "^3.4.0",
+    "uuid": "^8.3.2"
   }
 }
