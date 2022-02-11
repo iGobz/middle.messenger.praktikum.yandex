@@ -6,16 +6,14 @@ interface AvatarProps {
   events?: {
     click: (e: Event) => {}
   }
-};
+}
 
 export class Avatar extends Block {
+  constructor(props: AvatarProps) {
+    super('div', props);
+  }
 
-    constructor(props: AvatarProps) {
-      super("div", props);
-    }
-  
-    render() {
-
-        return compile(tmpl, this.props);
-    }
+  render() {
+    return compile(tmpl, this.props);
+  }
 }

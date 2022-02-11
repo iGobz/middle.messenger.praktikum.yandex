@@ -1,1 +1,1 @@
-export { default } from "./HTTPTransport";
+export { default } from './HTTPTransport';

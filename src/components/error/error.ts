@@ -9,17 +9,15 @@ interface ErrorProps {
   message: string,
 }
 
-export class Error extends Block {
+export class ErrorComponent extends Block {
+  constructor(props: ErrorProps) {
+    super('button', props);
+  }
 
-    constructor(props: ErrorProps) {
-      super("button", props);
-    }
-  
-    render() {
-
-        return compile(tmpl, { 
-            styles,
-            ...this.props
-        });
-    }
+  render() {
+    return compile(tmpl, {
+      styles,
+      ...this.props,
+    });
+  }
 }

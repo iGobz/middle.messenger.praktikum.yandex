@@ -5,16 +5,14 @@ import compile from '../../utils/compile';
 interface LabelProps {
   text: string,
   class?: string
-};
+}
 
 export class Label extends Block {
+  constructor(props: LabelProps) {
+    super('div', props);
+  }
 
-    constructor(props: LabelProps) {
-      super("div", props);
-    }
-  
-    render() {
-
-        return compile(tmpl, this.props);
-    }
+  render() {
+    return compile(tmpl, this.props);
+  }
 }

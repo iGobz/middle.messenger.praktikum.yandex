@@ -1,15 +1,15 @@
-import Block from "./block";
+import Block from './block';
 
 export function renderDOM(query: string, block: Block) {
-    const root = document.querySelector(query)
+  const root = document.querySelector(query);
 
-    if(!root) {
-        throw new Error('Root element not found')
-    }
+  if (!root) {
+    throw new Error('Root element not found');
+  }
 
-    root.innerHTML = '';
-    block.element.removeAttribute('style');
-    root.appendChild(block.getContent())
+  root.innerHTML = '';
+  block.element.removeAttribute('style');
+  root.appendChild(block.getContent());
 
-    return root;
+  return root;
 }

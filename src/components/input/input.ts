@@ -1,4 +1,5 @@
-import tmpl from './input.hbs';
+import tmplInput from './input.hbs';
+import tmplTextarea from './textarea.hbs';
 import Block from '../../utils/block';
 import compile from '../../utils/compile';
 
@@ -13,15 +14,18 @@ interface InputProps {
     blur?: () => void,
     focus?: () => void
   }
-};
+}
 
 export class Input extends Block {
+  constructor(props: InputProps) {
+    super('div', props);
+  }
 
-    constructor(props: InputProps) {
-      super("div", props);
+  render() {
+
+    if (this.props.type === 'textarea') {
+      return compile(tmplTextarea, this.props);
     }
-  
-    render() {
-        return compile(tmpl, this.props);
-    }
+    return compile(tmplInput, this.props);
+  }
 }

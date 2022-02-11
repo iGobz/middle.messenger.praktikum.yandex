@@ -11,13 +11,11 @@ interface ButtonProps {
 }
 
 export class Button extends Block {
+  constructor(props: ButtonProps) {
+    super('button', props);
+  }
 
-    constructor(props: ButtonProps) {
-      super("button", props);
-    }
-  
-    render() {
-
-        return compile(tmpl, this.props);
-    }
+  render() {
+    return compile(tmpl, this.props);
+  }
 }

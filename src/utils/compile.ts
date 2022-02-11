@@ -1,42 +1,38 @@
-import Block from "./block";
+import Block from './block';
 
-export default function compile(tmpl: (p: PropsType) => string, props: PropsType): DocumentFragment {
+export default function compile(tmpl: (p: any) => string, props: any): DocumentFragment {
+  const fragment = document.createElement('template');
+  const components: Record<string, Block> = {};
 
-    const fragment = document.createElement('template');
-    const components: Record<string, Block> = {};
+  Object.entries(props).forEach(([key, value]) => {
+    if (value instanceof Block) {
+      components[value.getId()] = value;
 
-    Object.entries(props).forEach(([key, value]) => {
-
-
-        if(value instanceof Block) {
-            components[value.getId()] = value;
-
-            props[key] = `<div id="id-${value.getId()}"></div>`;
+      props[key] = `<div id="id-${value.getId()}"></div>`;
+    }
+    if (value instanceof Array) {
+      const multiValues: string[] = [];
+      Object.values(value).forEach((v) => {
+        if (v instanceof Block) {
+          components[v.getId()] = v;
+          multiValues.push(`<div id="id-${v.getId()}"></div>`);
         }
-        if(value instanceof Array) {
-            const multiValues: string[] = [];
-            Object.values(value).forEach((v) => {
+      });
+      if (multiValues.length) {
+        props[key] = multiValues.join('');
+      }
+    }
+  });
 
-                if(v instanceof Block) {
-                    components[v.getId()] = v;
-                    multiValues.push(`<div id="id-${v.getId()}"></div>`);
-                }
-            });
-            if(multiValues.length) {
-                props[key] = multiValues.join('');
-            }
-        }        
-    });
+  fragment.innerHTML = tmpl(props);
 
-    fragment.innerHTML = tmpl(props);
+  Object.entries(components).forEach(([id, component]) => {
+    const stub = fragment.content.querySelector(`#id-${id}`);
+    if (!stub) {
+      return;
+    }
+    stub.replaceWith(component.getContent());
+  });
 
-    Object.entries(components).forEach(([id, component]) => {
-        const stub = fragment.content.querySelector(`#id-${id}`);
-        if(!stub) {
-            return;
-        }
-        stub.replaceWith(component.getContent());
-    })
-
-    return fragment.content;
+  return fragment.content;
 }
