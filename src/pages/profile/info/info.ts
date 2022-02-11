@@ -31,14 +31,14 @@ export class ProfileInfo extends Block {
       class: this.props.styles['profile-info-link-change-info'],
       text: 'Изменить данные',
       events: {
-        click: () => { renderDOM('#app', this.props.linkClickChangeInfo); },
+        click: () => { renderDOM('#app', this.props.changeInfo); },
       },
     });
     const linkChangePassword = new Link({
       class: this.props.styles['profile-info-link-change-password'],
       text: 'Изменить пароль',
       events: {
-        click: () => { renderDOM('#app', this.props.linkClickChangePassword); },
+        click: () => { renderDOM('#app', this.props.changePassword); },
       },
     });
     const linkExit = new Link({

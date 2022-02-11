@@ -8,7 +8,9 @@ export default function compile(tmpl: (p: any) => string, props: any): DocumentF
     if (value instanceof Block) {
       components[value.getId()] = value;
 
-      props[key] = `<div id="id-${value.getId()}"></div>`;
+      try {
+        props[key] = `<div id="id-${value.getId()}"></div>`;
+      } catch (err) {}
     }
     if (value instanceof Array) {
       const multiValues: string[] = [];
