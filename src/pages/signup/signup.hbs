@@ -2,26 +2,24 @@
     <div class={{ styles.auth-container }}>
         <div class={{ styles.auth-header }}>Регистрация</div>
         <form class={{ styles.form }}>
-            {{> label classes=(concat styles.label styles.form-label) text="Почта" }}
-            {{> input type="text" classes=(concat styles.input styles.input-email) name="email" }}
-            {{> label classes=(concat styles.label styles.form-label) text="Логин" }}
-            {{> input type="text"  classes=(concat styles.input styles.input-login) name="login" }}
-            {{> label classes=(concat styles.label styles.form-label) text="Имя" }}
-            {{> input type="text"  classes=(concat styles.input styles.input-first_name) name="first_name" }}
-            {{> label classes=(concat styles.label styles.form-label) text="Фамилия" }}
-            {{> input type="text"  classes=(concat styles.input styles.input-second_name) name="second_name" }}
-            {{> label classes=(concat styles.label styles.form-label) text="Телефон" }}
-            {{> input type="text"  classes=(concat styles.input styles.input-phone) name="phone" }}
-            {{> label classes=(concat styles.label styles.form-label) text="Пароль" }}
-            {{> input type="password"  classes=(concat styles.input styles.input-password) name="password" }}
-            {{> label classes=(concat styles.label styles.form-label) text="Пароль (ещё раз)" }}
-            {{> input type="password"  classes=(concat styles.input styles.input-password2) name="password2" }}
+            {{{ labelEmail }}}
+            {{{ inputEmail }}}
+            {{{ labelLogin }}}
+            {{{ inputLogin }}}
+            {{{ labelFirstName }}}
+            {{{ inputFirstName }}}
+            {{{ labelSecondName }}}
+            {{{ inputSecondName }}}
+            {{{ labelPhone }}}
+            {{{ inputPhone }}}
+            {{{ labelPassword }}}
+            {{{ inputPassword }}}
+            {{{ labelPassword2 }}}
+            {{{ inputPassword2 }}}
             <div class="{{ styles.form-signup-spacer }}">&nbsp;</div>
             <div class="form-buttons">
-                {{> button classes=(concat styles.button styles.signup-form-button-primary)
-                text="Зарегистрироваться" }}
-                {{> button classes=(concat styles.button styles.signup-form-button-secondary)
-                text="Войти" }}
+                {{{ buttonSignup }}}
+                {{{ buttonLogin }}}
             </div>
         </form>
     </div>

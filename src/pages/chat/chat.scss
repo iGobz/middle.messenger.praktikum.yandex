@@ -27,12 +27,9 @@
 
 .chat-right-container {
     display: flex;
-    flex-direction: column;
     flex-grow: 1;
     flex-shrink: 1;
-    background-color: #ffffff;
 
-    border-left: 1px solid #eaeaea;
 }
 .chat-stub {
     margin: auto;
@@ -44,7 +41,7 @@
     color: #999999;
 }
 
-.link-profile-open {
+.profile-link-container {
     font-family: $font-family;
     font-style: normal;
     font-size: 12px;
@@ -52,6 +49,10 @@
     text-align: right;
     color: #999999;
     padding: 21px 10px;
+}
+
+.link-profile-open {
+    display: inline;
 }
 
 .search-container {

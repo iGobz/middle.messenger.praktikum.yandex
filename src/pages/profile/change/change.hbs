@@ -1,7 +1,7 @@
 <div class="{{ styles.profile-container }}">
     <div class={{ styles.profile-change-return }}>
         <div class={{ styles.arrow-button-container }}>
-            <img class={{ styles.profile-return-button }} src={{ icons.arrowback-svg }}>
+            {{{ linkProfileChangeReturn }}}
         </div>
 
     </div>
@@ -10,32 +10,32 @@
             <img class={{ styles.profile-avatar-image }} src={{ images }}>
             <div class={{ styles.profile-info-fields-container }}>
                 <div class={{ styles.profile-info-field }}>
-                    <div class={{ styles.profile-info-field-name }}>Почта</div>
-                    {{> input classes=styles.profile-change-field-value type="text" name="email" value="email@yandex.ru" }}
+                    {{{ labelEmail }}}
+                    {{{ inputEmail }}}
                 </div>
                 <div class={{ styles.profile-info-field }}>
-                    <div class={{ styles.profile-info-field-name }}>Логин</div>
-                    {{> input classes=styles.profile-change-field-value type="text" name="login" value="ivanivanov" }}
+                    {{{ labelLogin }}}
+                    {{{ inputLogin }}}
                 </div>
                 <div class={{ styles.profile-info-field }}>
-                    <div class={{ styles.profile-info-field-name }}>Имя</div>
-                    {{> input classes=styles.profile-change-field-value type="text" name="first_name" value="Иван" }}
+                    {{{ labelFirstName }}}
+                    {{{ inputFirstName }}}
                 </div>
                 <div class={{ styles.profile-info-field }}>
-                    <div class={{ styles.profile-info-field-name }}>Фамилия</div>
-                    {{> input classes=styles.profile-change-field-value type="text" name="second_name" value="Иванов" }}
+                    {{{ labelSecondName }}}
+                    {{{ inputSecondName }}}
                 </div>
                 <div class={{ styles.profile-info-field }}>
-                    <div class={{ styles.profile-info-field-name }}>Имя в чате</div>
-                    {{> input classes=styles.profile-change-field-value type="text" name="display_name" value="Иван" }}
+                    {{{ labelDisplayName }}}
+                    {{{ inputDisplayName }}}
                 </div>
                 <div class={{ styles.profile-info-field }}>
-                    <div class={{ styles.profile-info-field-name }}>Телефон</div>
-                    {{> input classes=styles.profile-change-field-value type="text" name="phone" value="+7 (999) 111 22 33" }}
+                    {{{ labelPhone }}}
+                    {{{ inputPhone }}}
                 </div>
             </div>
 
-            {{> button classes=(concat styles.button styles.profile-change-save-button) text="Сохранить" }}
+            {{{ buttonSave }}}
         </div>
     </div>
 </div>

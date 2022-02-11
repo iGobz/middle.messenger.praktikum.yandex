@@ -7,10 +7,7 @@
 
 </head>
 <body>
-    <main role="main"></main>
+    <main role="main" id="app"></main>
 </body>
-<script type="module">
-    import { pages, styles } from './errors.js';
-    document.querySelector('main').innerHTML = pages.error404Template({styles});
-</script>
+<script type="module" src="pages/errors/404.ts"></script>
 </html>

@@ -1,1 +1,5 @@
-<input type="{{ type }}" class="{{ classes }}" name="{{ name }}" value="{{ value }}" placeholder="{{ placeholder }}">
+{{#ifEq type 'textarea'}}
+<textarea class="{{ class }}" name="{{ name }}" data-validation="{{ validationType }}" placeholder="{{ placeholder }}">{{ value }}</textarea>
+{{else}}
+<input type="{{ type }}" class="{{ class }}" name="{{ name }}" value="{{ value }}" data-validation="{{ validationType }}" placeholder="{{ placeholder }}">
+{{/ifEq}}
