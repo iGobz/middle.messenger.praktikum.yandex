@@ -1,4 +1,6 @@
 {
+    "include": ["./src/**/*","./server.ts"],
+    "exclude": ["./dist"],
     "compilerOptions": {
         "noImplicitAny": true,
         "noUnusedLocals": true,
@@ -13,7 +15,5 @@
             "./src/@types", 
             "./node_modules/@types"
         ],
-    },
-    "include": ["./src/**/*","./server.ts"],
-    "exclude": ["./dist"]
+    }
   }
