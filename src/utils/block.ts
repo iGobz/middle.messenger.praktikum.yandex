@@ -1,6 +1,5 @@
 import { v4 as makeUUID } from 'uuid';
 import EventBus from './eventbus';
-
 export default class Block {
   static EVENTS = {
     INIT: 'init',
@@ -48,7 +47,6 @@ export default class Block {
   }
 
   _createDocumentElement<K extends keyof HTMLElementTagNameMap>(tagName: K): HTMLElement {
-    // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
     return document.createElement(tagName);
   }
 
@@ -110,12 +108,6 @@ export default class Block {
     this._removeEvents();
     this._element.replaceWith(element);
     this._element = element as HTMLElement;
-
-    // console.log('Render');
-    // if(this._element.className.search(/modal\-container/) > -1) {
-    //   console.log(this._element.style.display);
-
-    // }
 
     this._addEvents();
   }

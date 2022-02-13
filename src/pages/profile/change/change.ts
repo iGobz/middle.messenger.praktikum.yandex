@@ -15,7 +15,7 @@ export class ProfileChange extends Block {
 
   _onFocusChange(event: Event) {
     const element = event.target as HTMLInputElement;
-    if (!isValid(event.target as HTMLInputElement)) {
+    if (!isValid(element)) {
       element.classList.add(this.props.styles['input-error']);
       element.previousElementSibling?.classList.add(this.props.styles['input-error']);
     } else {

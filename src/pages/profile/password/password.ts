@@ -15,17 +15,22 @@ export class ProfilePassword extends Block {
 
   _onFocusChange(event: Event) {
     const element = event.target as HTMLInputElement;
-    if (!isValid(event.target as HTMLInputElement)) {
-      if (!element.classList.contains(this.props.styles['input-error'])) {
-        element.classList.add(this.props.styles['input-error']);
-      }
-      if (!element.previousElementSibling?.classList.contains(this.props.styles['input-error'])) {
-        element.previousElementSibling?.classList.add(this.props.styles['input-error']);
-      }
+    if (!isValid(element)) {
+      element.classList.add(this.props.styles['input-error']);
+      element.previousElementSibling?.classList.add(this.props.styles['input-error']);
     } else {
       element.classList.remove(this.props.styles['input-error']);
       element.previousElementSibling?.classList.remove(this.props.styles['input-error']);
     }
+
+    if (element.name == 'newPassword2') {
+      const password1 = (element.form?.elements as { [key: string]: any }).newPassword;
+      if (password1 && element.value !== password1.value) {
+        element.classList.add(this.props.styles['input-error']);
+        element.previousElementSibling?.classList.remove(this.props.styles['input-error']);
+      }
+    }
+
   }
 
   render() {

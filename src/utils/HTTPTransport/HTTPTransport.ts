@@ -1,4 +1,4 @@
-enum METHOD {
+enum Method {
   GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',
@@ -6,28 +6,35 @@ enum METHOD {
 }
 
 type Options = {
-  method: METHOD;
+  method: Method;
   data?: any;
 };
 
+function queryStringify(data: Record<string, any>) {
+  return Object.entries(data).map(([key, value]) => key + '=' + value).join('&');
+}
 export default class HTTPTransport {
-  get(url: string, options: Options = { method: METHOD.GET }): Promise<XMLHttpRequest> {
-    return this.request(url, { ...options, method: METHOD.GET });
+  get(url: string, options: Options = { method: Method.GET }): Promise<XMLHttpRequest> {
+    if (options.data) {
+      url += '?' + queryStringify(options.data);
+      options.data = {};
+    }
+    return this.request(url, { ...options, method: Method.GET });
   }
 
-  post(url: string, options: Options = { method: METHOD.POST }): Promise<XMLHttpRequest> {
+  post(url: string, options: Options = { method: Method.POST }): Promise<XMLHttpRequest> {
     return this.request(url, options);
   }
 
-  put(url: string, options: Options = { method: METHOD.PUT }): Promise<XMLHttpRequest> {
+  put(url: string, options: Options = { method: Method.PUT }): Promise<XMLHttpRequest> {
     return this.request(url, options);
   }
 
-  delete(url: string, options: Options = { method: METHOD.DELETE }): Promise<XMLHttpRequest> {
+  delete(url: string, options: Options = { method: Method.DELETE }): Promise<XMLHttpRequest> {
     return this.request(url, options);
   }
 
-  request(url: string, options: Options = { method: METHOD.GET }): Promise<XMLHttpRequest> {
+  request(url: string, options: Options = { method: Method.GET }): Promise<XMLHttpRequest> {
     const { method, data } = options;
 
     return new Promise((resolve, reject) => {
@@ -48,7 +55,7 @@ export default class HTTPTransport {
       xhr.onerror = reject;
       xhr.ontimeout = reject;
 
-      if (method === METHOD.GET || !data) {
+      if (method === Method.GET || !data) {
         xhr.send();
       } else {
         xhr.send(data);

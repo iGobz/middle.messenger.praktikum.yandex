@@ -19,6 +19,12 @@ export class Signup extends Block {
     } else {
       element.classList.remove(this.props.styles['input-error']);
     }
+    if (element.name == 'password2') {
+      const password1 = (element.form?.elements as { [key: string]: any }).password;
+      if (password1 && element.value !== password1.value) {
+        element.classList.add(this.props.styles['input-error']);
+      }
+    }
   }
 
   render() {

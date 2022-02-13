@@ -11,7 +11,7 @@ export class Login extends Block {
     super('div', props);
   }
 
-  _onFocusChange(event: Event) {
+  private _onFocusChange(event: Event) {
     const element = event.target as HTMLInputElement;
     if (!isValid(element)) {
       element.classList.add(this.props.styles['input-error']);

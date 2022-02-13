@@ -13,7 +13,7 @@ export class Chat extends Block {
 
   _onFocusChange(event: Event) {
     const element = event.target as HTMLInputElement;
-    if (!isValid(event.target as HTMLInputElement)) {
+    if (!isValid(element)) {
       if (!element.classList.contains(this.props.styles['input-error'])) {
         element.classList.add(this.props.styles['input-error']);
       }
