@@ -1,11 +1,11 @@
 <div class={{ styles.chat-info-container }}>
     <div class={{ styles.chat-info }}>
         <div class={{ styles.chat-avatar }}><img class={{ styles.avatar-image }} src={{ images }}></div>
-        <div class={{ styles.chat-name }}>Олег</div>
-        <div class={{ styles.chat-time }}>10:49</div>
-        <div class={{ styles.chat-last-message }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+        <div class={{ styles.chat-name }}>{{ name }}</div>
+        <div class={{ styles.chat-time }}>{{ time }}</div>
+        <div class={{ styles.chat-last-message }}>{{ text }}</div>
         <div class={{ styles.chat-unread-count-container }}>
-            <div class={{ styles.chat-unread-count }}>5</div>
+            <div class={{ styles.chat-unread-count }}>{{ unread }} </div>
         </div>
     </div>
 </div>

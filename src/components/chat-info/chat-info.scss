@@ -4,7 +4,6 @@
     transition: border-bottom 0.5s;
     &:hover {
         border-bottom: 1px solid #3369f3;
-        // transition: border-bottom 0.5s;
     }
 }
 
@@ -63,7 +62,7 @@
     line-height: 15px;
     text-align: left;
     color: #999999;
-    
+    overflow: hidden;
 }
 
 .chat-unread-count-container {
