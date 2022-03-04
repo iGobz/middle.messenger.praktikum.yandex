@@ -1,5 +1,6 @@
 import { v4 as makeUUID } from 'uuid';
 import EventBus from './eventbus';
+import GlobalEventBus from './globaleventbus';
 
 export default class Block {
   static EVENTS = {
@@ -19,6 +20,8 @@ export default class Block {
 
   eventBus: (() => EventBus);
 
+  g: GlobalEventBus;
+
   constructor(
     tagName: string = 'div',
     props: any,
@@ -37,6 +40,8 @@ export default class Block {
 
     this._registerEvents(eventBus);
 
+    this.g = GlobalEventBus.instance;
+
     eventBus.emit(Block.EVENTS.INIT);
   }
 
@@ -48,7 +53,6 @@ export default class Block {
   }
 
   _createDocumentElement<K extends keyof HTMLElementTagNameMap>(tagName: K): HTMLElement {
-    // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
     return document.createElement(tagName);
   }
 
@@ -111,12 +115,6 @@ export default class Block {
     this._element.replaceWith(element);
     this._element = element as HTMLElement;
 
-    // console.log('Render');
-    // if(this._element.className.search(/modal\-container/) > -1) {
-    //   console.log(this._element.style.display);
-
-    // }
-
     this._addEvents();
   }
 
@@ -154,8 +152,6 @@ export default class Block {
   }
 
   _makePropsProxy(props: any) {
-    // Можно и так передать this
-    // Такой способ больше не применяется с приходом ES6+
     const self = this;
 
     return new Proxy(props, {
@@ -164,12 +160,13 @@ export default class Block {
         return typeof value === 'function' ? value.bind(target) : value;
       },
       set(target, prop: string, value) {
-        if (target[prop] !== value) {
+        // console.log('set: ', target[prop], 'to: ', value);
+        if (target[prop] !== value || typeof value === 'object') {
           target[prop] = value;
+
           self.eventBus().emit(Block.EVENTS.FLOW_CDU);
-          return true;
         }
-        return false;
+        return true;
       },
       deleteProperty(_target, _prop) {
         throw new Error('нет доступа');
@@ -182,6 +179,9 @@ export default class Block {
   }
 
   hide() {
-    this.getContent().style.display = 'none';
+    this._element.remove();
+
+    // this.element.innerHTML = '';
+    // this.getContent().style.display = 'none';
   }
 }

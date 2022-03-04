@@ -4,17 +4,30 @@ import compile from '../../../utils/compile';
 
 import { Link, Avatar } from '../../../components';
 import { renderDOM } from '../../../utils/renderdom';
+import GlobalEventBus from '../../../utils/globaleventbus';
+import User from '../../../utils/user';
+import { ModalAvatar } from '../../modals';
 
 export class ProfileInfo extends Block {
   constructor(props: any) {
     super('div', props);
+
+    this.g.EventBus.on(GlobalEventBus.EVENTS.USERDATA_UPDATED, this._onUserDataUpdated.bind(this));
+  }
+
+  private _onUserDataUpdated(user: User) {
+      this.setProps({
+          user: user.getData(),
+      });
   }
 
   render() {
     const changeAvatar = new Avatar({
       ...this.props,
       events: {
-        click: () => { renderDOM('#modal', this.props.linkChangeAvatar); },
+        click: () => {
+            renderDOM('#modal', new ModalAvatar(this.props));
+        },
       },
     });
 
@@ -23,29 +36,37 @@ export class ProfileInfo extends Block {
       imageBeforeClass: this.props.styles['profile-return-button'],
       imageBeforeSrc: this.props.icons.arrowback,
       events: {
-        click: () => { renderDOM('#app', this.props.arrowBack); },
+        click: () => { 
+            this.props.router.go('/chats');            
+        },
       },
     });
 
     const linkChangeInfo = new Link({
-      class: this.props.styles['profile-info-link-change-info'],
+      class: `${this.props.styles.link} ${this.props.styles['profile-info-link-change-info']}`,
       text: 'Изменить данные',
       events: {
-        click: () => { renderDOM('#app', this.props.changeInfo); },
+        click: () => { 
+            this.props.router.go('/settings-change');            
+        },
       },
     });
     const linkChangePassword = new Link({
-      class: this.props.styles['profile-info-link-change-password'],
+      class: `${this.props.styles.link} ${this.props.styles['profile-info-link-change-password']}`,
       text: 'Изменить пароль',
       events: {
-        click: () => { renderDOM('#app', this.props.changePassword); },
+        click: () => { 
+            this.props.router.go('/settings-password');            
+        },
       },
     });
     const linkExit = new Link({
-      class: this.props.styles['profile-info-link-exit'],
+      class: `${this.props.styles.link} ${this.props.styles['profile-info-link-exit']}`,
       text: 'Выйти',
       events: {
-        click: () => { renderDOM('#app', this.props.linkClickExit); },
+        click: () => {
+            this.g.EventBus.emit(GlobalEventBus.EVENTS.ACTION_LOGOUT, '/');
+        },
       },
     });
 

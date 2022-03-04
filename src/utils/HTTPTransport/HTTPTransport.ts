@@ -1,4 +1,4 @@
-enum METHOD {
+enum Method {
   GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',
@@ -6,52 +6,82 @@ enum METHOD {
 }
 
 type Options = {
-  method: METHOD;
+  method?: Method;
   data?: any;
+  headers?: any;
 };
 
+function queryStringify(data: Record<string, any>) {
+  return Object.entries(data).map(([key, value]) => {
+    return encodeURIComponent(key) + '=' + encodeURIComponent(value);
+  }).join('&');
+}
 export default class HTTPTransport {
-  get(url: string, options: Options = { method: METHOD.GET }): Promise<XMLHttpRequest> {
-    return this.request(url, { ...options, method: METHOD.GET });
+
+  private _baseurl: string;
+
+  constructor(baseurl: string) {
+    this._baseurl = baseurl;
   }
 
-  post(url: string, options: Options = { method: METHOD.POST }): Promise<XMLHttpRequest> {
-    return this.request(url, options);
+  get(url: string, options?: Options): Promise<XMLHttpRequest> {
+    if (options && options.data) {
+      url += '?' + queryStringify(options.data);
+      options.data = {};
+    }
+    return this.request(this._baseurl + url, { ...options, method: Method.GET });
   }
 
-  put(url: string, options: Options = { method: METHOD.PUT }): Promise<XMLHttpRequest> {
-    return this.request(url, options);
+  post(url: string, options?: Options): Promise<XMLHttpRequest> {
+    return this.request(this._baseurl + url, { ...options, method: Method.POST });
   }
 
-  delete(url: string, options: Options = { method: METHOD.DELETE }): Promise<XMLHttpRequest> {
-    return this.request(url, options);
+  put(url: string, options?: Options): Promise<XMLHttpRequest> {
+    return this.request(this._baseurl + url, { ...options, method: Method.PUT });
   }
 
-  request(url: string, options: Options = { method: METHOD.GET }): Promise<XMLHttpRequest> {
-    const { method, data } = options;
+  delete(url: string, options?: Options): Promise<XMLHttpRequest> {
+    return this.request(this._baseurl + url, { ...options, method: Method.DELETE });
+  }
+
+  request(url: string, options: Options = { method: Method.GET }): Promise<XMLHttpRequest> {
+    const { headers = { 'Content-Type': 'application/json' }, method, data } = options;
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
 
-      xhr.open(method, url);
+      xhr.open(method as string, url);
       xhr.withCredentials = true;
 
-      xhr.onload = function () {
-        const { status, response } = xhr;
-        if (status === 200 || status === 201) {
-          return resolve(JSON.parse(response));
+      let json = true;
+
+
+      Object.keys(headers).forEach((key) => {
+        if (key.toLowerCase() === 'content-type' && headers[key].toLowerCase() === 'multipart/form-data') {
+          json = false;
+        } else {
+          xhr.setRequestHeader(key, headers[key]);
         }
-        return reject(JSON.parse(response));
+      });
+
+      xhr.onload = function () {
+        const { status } = xhr;
+        if (status === 200 || status === 201) {
+          return resolve(xhr);
+        }
+        return reject(xhr);
       };
 
       xhr.onabort = reject;
       xhr.onerror = reject;
       xhr.ontimeout = reject;
 
-      if (method === METHOD.GET || !data) {
+      if (method === Method.GET || !data) {
         xhr.send();
       } else {
-        xhr.send(data);
+
+        const d = json ? JSON.stringify(data) : data;
+        xhr.send(d);
       }
     });
   }

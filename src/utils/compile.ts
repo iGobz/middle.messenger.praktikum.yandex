@@ -33,6 +33,7 @@ export default function compile(tmpl: (p: any) => string, props: any): DocumentF
     if (!stub) {
       return;
     }
+    // component.element.dataset.id = id;
     stub.replaceWith(component.getContent());
   });
 
