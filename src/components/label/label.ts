@@ -3,7 +3,7 @@ import Block from '../../utils/block';
 import compile from '../../utils/compile';
 
 interface LabelProps {
-  text: string,
+  text?: string,
   class?: string
 }
 

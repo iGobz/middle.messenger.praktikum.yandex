@@ -8,7 +8,7 @@ export function renderDOM(query: string, block: Block) {
   }
 
   root.innerHTML = '';
-  block.element.removeAttribute('style');
+ // block.element.removeAttribute('style');
   root.appendChild(block.getContent());
 
   return root;

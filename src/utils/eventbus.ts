@@ -5,7 +5,10 @@ export default class EventBus {
     this.listeners = {};
   }
 
-  on(event: string, callback: () => {}) {
+  on(event: string, callback: (args: any) => void) {
+    if (event === 'validate') {
+        console.log(this.listeners);
+    }
     if (!this.listeners[event]) {
       this.listeners[event] = [];
     }
@@ -13,7 +16,7 @@ export default class EventBus {
     this.listeners[event].push(callback);
   }
 
-  off(event: string, callback: () => {}) {
+  off(event: string, callback: (args: any) => void) {
     if (!this.listeners[event]) {
       throw new Error(`Нет события: ${event}`);
     }
@@ -23,7 +26,7 @@ export default class EventBus {
     );
   }
 
-  emit(event: string, ...args: string[]) {
+  emit(event: string, ...args: any[]) {
     if (!this.listeners[event]) {
       throw new Error(`Нет события: ${event}`);
     }

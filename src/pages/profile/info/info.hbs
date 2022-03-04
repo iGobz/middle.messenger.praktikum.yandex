@@ -10,31 +10,31 @@
             <div>
                 {{{ changeAvatar }}}
             </div>
-            <div class={{ styles.profile-display-name }}>Иван</div>
+            <div class={{ styles.profile-display-name }}>{{ user.display_name }}</div>
             <div class={{ styles.profile-info-fields-container }}>
                 <div class={{ styles.profile-info-field }}>
                     <div class={{ styles.profile-info-field-name }}>Почта</div>
-                    <div class={{ styles.profile-info-field-value }}>email@yandex.ru</div>
+                    <div class={{ styles.profile-info-field-value }}>{{ user.email }}</div>
                 </div>
                 <div class={{ styles.profile-info-field }}>
                     <div class={{ styles.profile-info-field-name }}>Логин</div>
-                    <div class={{ styles.profile-info-field-value }}>ivanivanov</div>
+                    <div class={{ styles.profile-info-field-value }}>{{ user.login }}</div>
                 </div>
                 <div class={{ styles.profile-info-field }}>
                     <div class={{ styles.profile-info-field-name }}>Имя</div>
-                    <div class={{ styles.profile-info-field-value }}>Иван</div>
+                    <div class={{ styles.profile-info-field-value }}>{{ user.first_name }}</div>
                 </div>
                 <div class={{ styles.profile-info-field }}>
                     <div class={{ styles.profile-info-field-name }}>Фамилия</div>
-                    <div class={{ styles.profile-info-field-value }}>Иванов</div>
+                    <div class={{ styles.profile-info-field-value }}>{{ user.second_name }}</div>
                 </div>
                 <div class={{ styles.profile-info-field }}>
                     <div class={{ styles.profile-info-field-name }}>Имя в чате</div>
-                    <div class={{ styles.profile-info-field-value }}>Иван</div>
+                    <div class={{ styles.profile-info-field-value }}>{{ user.display_name }}</div>
                 </div>
                 <div class={{ styles.profile-info-field }}>
                     <div class={{ styles.profile-info-field-name }}>Телефон</div>
-                    <div class={{ styles.profile-info-field-value }}>+7 (999) 111 22 33</div>
+                    <div class={{ styles.profile-info-field-value }}>{{ user.phone }}</div>
                 </div>
             </div>
 

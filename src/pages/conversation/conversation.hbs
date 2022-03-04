@@ -1,16 +1,18 @@
 <div class={{ styles.conversation-container }}>
 <div class={{ styles.conversation-header }}>
     <div class={{ styles.conversation-avatar-container }}>
-        <img class={{ styles.conversation-avatar-image }} src={{ images }}>
-        <div class={{ styles.conversation-user-name }}>Олег</div>
+        {{{ chatUsers }}}
+        {{!-- <img class={{ styles.conversation-avatar-image }} src={{ images }}>
+        <div class={{ styles.conversation-user-name }}>Олег</div> --}}
     </div>
     <div class={{ styles.conversation-actions-container}}>
-        <img class={{ styles.actions-button }} src={{ icons.threedots }}>
+        {{{ conversationActionsLink }}}
+        {{!-- <img class={{ styles.actions-button }} src={{ icons.threedots }}> --}}
     </div>
 
 </div>
 <div class={{ styles.conversation-body-container }}>
-    <div class={{ styles.conversation-date }}>2 декабря</div>
+    {{!-- <div class={{ styles.conversation-date }}>2 декабря</div>
     <div class={{ styles.conversation-other-message }}>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis vel obcaecati iste nisi accusantium magni dolores. Velit reprehenderit rem, quasi voluptatum porro amet officiis. Incidunt mollitia pariatur quos explicabo voluptatibus.
         <div class={{ styles.conversation-other-message-time }}>23:59</div>
@@ -30,7 +32,8 @@
             <img src={{ icons.status-read }}>
         <div class={{ styles.conversation-self-message-time }}>23:59</div>
         </div>
-    </div>
+    </div> --}}
+    {{{ messages }}}
 
 
 </div>
