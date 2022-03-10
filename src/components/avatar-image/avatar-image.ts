@@ -1,6 +1,7 @@
 import { Image, ImageProps } from '../image';
 import GlobalEventBus from '../../utils/globaleventbus';
 import User from '../../utils/user';
+import { config } from '../../utils/config';
 
 
 export class AvatarImage extends Image {
@@ -19,7 +20,7 @@ export class AvatarImage extends Image {
     User.instance.setData({ avatar: user.avatar });
     
     this.setProps({
-      src: 'https://ya-praktikum.tech/api/v2/resources' + user.avatar,
+      src: config.resourceUrl + user.avatar,
     });
   }
 }

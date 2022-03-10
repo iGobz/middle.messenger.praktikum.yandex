@@ -1,14 +1,14 @@
 import tmpl from './delete-user.hbs';
-import Block from '../../../utils/block';
 import compile from '../../../utils/compile';
 import { Button, ErrorMessage, Input } from '../../../components';
 import GlobalEventBus from '../../../utils/globaleventbus';
+import Page, { PageProps } from '../../../utils/page';
 
-export class ModalDeleteUser extends Block {
+export class ModalDeleteUser extends Page {
 
   _errorMessage: ErrorMessage;
 
-  constructor(props: any) {
+  constructor(props: PageProps) {
     super('div', {
       ...props,
       events: {

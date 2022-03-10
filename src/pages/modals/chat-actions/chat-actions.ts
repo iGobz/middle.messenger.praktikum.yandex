@@ -1,15 +1,15 @@
 import tmpl from './chat-actions.hbs';
-import Block from '../../../utils/block';
 import compile from '../../../utils/compile';
 import { Link } from '../../../components';
 import { renderDOM } from '../../../utils/renderdom';
 import { ModalAddUser } from '../add-user/add-user';
 import { ModalDeleteUser } from '../delete-user/delete-user';
 import { ModalConfirm } from '../confirm/confirm';
+import Page, { PageProps } from '../../../utils/page';
 
-export class ChatActions extends Block {
+export class ChatActions extends Page {
 
-  constructor(props: any) {
+  constructor(props: PageProps) {
     super('div', {
       ...props,
       events: {

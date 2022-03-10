@@ -16,8 +16,6 @@ export class Image extends Block {
   }
 
   render() {
-    // // this.element.dataset.id = this.getId();
-    // console.log(this);
     return compile(tmpl, this.props);
   }
 }

@@ -1,15 +1,15 @@
 import tmpl from './confirm.hbs';
-import Block from '../../../utils/block';
 import compile from '../../../utils/compile';
 import { Button, ErrorMessage, Label } from '../../../components';
 import GlobalEventBus from '../../../utils/globaleventbus';
 import { renderDOM } from '../../../utils/renderdom';
+import Page, { PageProps } from '../../../utils/page';
 
-export class ModalConfirm extends Block {
+export class ModalConfirm extends Page {
 
-  _errorMessage: ErrorMessage;
+  private _errorMessage: ErrorMessage;
 
-  constructor(props: any) {
+  constructor(props: PageProps) {
     super('div', {
       ...props,
       events: {

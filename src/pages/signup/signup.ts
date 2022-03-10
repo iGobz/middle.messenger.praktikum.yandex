@@ -1,17 +1,16 @@
 import tmpl from './signup.hbs';
-
-import Block from '../../utils/block';
+import compile from '../../utils/compile';
 import { Label, Input, Button, ErrorMessage } from '../../components';
 
-import compile from '../../utils/compile';
 import { isValid } from '../../utils/validator';
 import GlobalEventBus from '../../utils/globaleventbus';
+import Page, { PageProps } from '../../utils/page';
 
-export class Signup extends Block {
+export class Signup extends Page {
 
-  _errorMessage: ErrorMessage;
+  private _errorMessage: ErrorMessage;
 
-  constructor(props: any) {
+  constructor(props: PageProps) {
     super('div', props);
     this.g.EventBus.on(GlobalEventBus.EVENTS.VALIDATE_SIGNUP_FAILED, this._onValidateSignupFailed.bind(this));
     this.g.EventBus.on(GlobalEventBus.EVENTS.ACTION_SIGNUP_FAILED, this._onActionSignupFailed.bind(this));

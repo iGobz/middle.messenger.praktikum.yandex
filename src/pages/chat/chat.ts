@@ -1,5 +1,4 @@
 import tmpl from './chat.hbs';
-import Block from '../../utils/block';
 import compile from '../../utils/compile';
 
 import { Link, Input, ChatInfo } from '../../components';
@@ -9,31 +8,33 @@ import GlobalEventBus from '../../utils/globaleventbus';
 import { ModalCreateChat } from '../modals';
 import User from '../../utils/user';
 import { Conversation } from '../conversation';
+import Page, { PageProps } from '../../utils/page';
 
+export interface LastMessage {
+    user: {
+        first_name: string,
+        second_name: string,
+        avatar: string,
+        email: string,
+        login: string,
+        phone: string,
+    }
+    time: string,
+    content: string,
+}
 export interface ChatInfoData {
     id: number,
     title: string,
     avatar: string,
     unread_count: number | undefined,
-    last_message?: {
-        user: {
-            first_name: string,
-            second_name: string,
-            avatar: string,
-            email: string,
-            login: string,
-            phone: string,
-        }
-        time: string,
-        content: string,
-    }
+    last_message?: LastMessage,
 }
 
-export class Chat extends Block {
+export class Chat extends Page {
 
     private _chatInfos: ChatInfo[];
 
-    constructor(props: any) {
+    constructor(props: PageProps) {
         super('div', props);
 
         this.g.EventBus.on(
@@ -42,10 +43,6 @@ export class Chat extends Block {
         this.g.EventBus.on(
             GlobalEventBus.EVENTS.ACTION_GETCHATTOKEN_SUCCEED,
             this._onGetChatTokenSucceed.bind(this));
-
-        // this.g.EventBus.on(
-        //     GlobalEventBus.EVENTS.ACTION_CONNECTCHAT_SUCCEED,
-        //     this._onConnectChatSucceed.bind(this));
     }
 
     private _onGetChatTokenSucceed(data: { id: number, token: string }) {
@@ -62,7 +59,6 @@ export class Chat extends Block {
         });
 
         this.g.EventBus.emit(GlobalEventBus.EVENTS.ACTION_GETCHATUSERS, data.id);
-        // console.log(User.instance.getData());
     }
 
     private _onGetChatsSucceed(xhr: XMLHttpRequest) {
@@ -70,7 +66,6 @@ export class Chat extends Block {
         this._chatInfos = [];
         const chats: ChatInfoData[] = JSON.parse(xhr.responseText);
 
-        console.log('Chat props: ', this.props.icons);
         chats.forEach((chat) => {
 
             let timeString = '';
@@ -91,18 +86,10 @@ export class Chat extends Block {
                 events: {
                     click: () => {
                         try {
-                            const conversation = new Conversation({
-                                chatId: chat.id,
-                                styles: this.props.styles,
-                                images: this.props.images,
-                                icons: this.props.icons,
-                            });
+                            const props = { chatId: chat.id, ...this.props };
+                            const conversation = new Conversation(props);
                             this.g.EventBus.emit(GlobalEventBus.EVENTS.ACTION_GETCHATTOKEN, chat.id);
-                            // this.g.EventBus.emit(GlobalEventBus.EVENTS.ACTION_GETMESSAGES, {
-                            //         userId: User.instance.getData('id'),
-                            //         chatId: chat.id,
-                            //         token: User.instance.getToken(chat.id),
-                            //     })
+
                             renderDOM('#conversation', conversation);
 
                         } catch (error) {

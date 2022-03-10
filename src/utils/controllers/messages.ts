@@ -10,7 +10,6 @@ export default class MessagesController {
     }
 
     connectChat(data: { userId: number, chatId: number, token: string }) {
-        console.log(data);
         this._WSAPI.connect(data);
     }
 

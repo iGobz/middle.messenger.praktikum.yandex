@@ -1,14 +1,14 @@
 import tmpl from './create-chat.hbs';
-import Block from '../../../utils/block';
 import compile from '../../../utils/compile';
 import { Button, ErrorMessage, Input } from '../../../components';
 import GlobalEventBus from '../../../utils/globaleventbus';
+import Page, { PageProps } from '../../../utils/page';
 
-export class ModalCreateChat extends Block {
+export class ModalCreateChat extends Page {
 
-  _errorMessage: ErrorMessage;
+  private _errorMessage: ErrorMessage;
 
-  constructor(props: any) {
+  constructor(props: PageProps) {
     super('div', {
       ...props,
       events: {
@@ -19,9 +19,12 @@ export class ModalCreateChat extends Block {
     this.g.EventBus.on(
       GlobalEventBus.EVENTS.VALIDATE_CREATECHAT_FAILED,
       this._onValidateCreateChatFailed.bind(this));
-      this.g.EventBus.on(
-        GlobalEventBus.EVENTS.ACTION_CREATECHAT_FAILED,
-        this._onActionCreateChatFailed.bind(this));
+    this.g.EventBus.on(
+      GlobalEventBus.EVENTS.ACTION_CREATECHAT_FAILED,
+      this._onActionCreateChatFailed.bind(this));
+    this.g.EventBus.on(
+      GlobalEventBus.EVENTS.ACTION_CREATECHAT_SUCCEED,
+      this._onActionCreateChatSucceed.bind(this));
     }
 
   private _onValidateCreateChatFailed(formData: { [index: string]: any }) {
@@ -42,6 +45,10 @@ export class ModalCreateChat extends Block {
       'class': this.props.styles.error,
     });
     console.log('Error on create chat: ', text);
+  }
+
+  private _onActionCreateChatSucceed() {
+    this.hide();
   }
 
   hideModal(e: Event) {
@@ -90,7 +97,6 @@ export class ModalCreateChat extends Block {
             console.log('Error: ', error);
             
           }
-
         },
       },
     });

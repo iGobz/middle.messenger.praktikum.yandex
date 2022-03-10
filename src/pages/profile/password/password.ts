@@ -1,5 +1,4 @@
 import tmpl from './password.hbs';
-import Block from '../../../utils/block';
 import {
   Label, Input, Button, Link, ErrorMessage, AvatarImage,
 } from '../../../components';
@@ -8,12 +7,14 @@ import compile from '../../../utils/compile';
 import { isValid } from '../../../utils/validator';
 import GlobalEventBus from '../../../utils/globaleventbus';
 import User from '../../../utils/user';
+import { config } from '../../../utils/config';
+import Page, { PageProps } from '../../../utils/page';
 
-export class ProfilePassword extends Block {
+export class ProfilePassword extends Page {
 
-  _errorMessage: ErrorMessage;
+  private _errorMessage: ErrorMessage;
 
-  constructor(props: any) {
+  constructor(props: PageProps) {
     super('div', props);
     this.g.EventBus.on(
       GlobalEventBus.EVENTS.VALIDATE_SAVEPASSWORD_FAILED,
@@ -85,7 +86,7 @@ export class ProfilePassword extends Block {
   render() {
 
     const src = User.instance.getData('avatar')
-      ? 'https://ya-praktikum.tech/api/v2/resources' + User.instance.getData('avatar')
+      ? config.resourceUrl + User.instance.getData('avatar')
       : this.props.icons.user;
 
     const avatarImage = new AvatarImage({

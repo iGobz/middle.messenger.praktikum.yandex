@@ -1,12 +1,8 @@
 import { Input } from '../../components';
-import ChangeAvatarAPI from '../api/change-avatar-api';
-import FindUserAPI from '../api/find-user-api';
-import GetUserAPI from '../api/get-user-api';
-import LoginAPI, { LoginRequest } from '../api/login-api';
-import LogoutAPI from '../api/logout-api';
-import SaveInfoAPI from '../api/save-info-api';
-import SavePasswordAPI, { PasswordRequest } from '../api/save-password-api';
-import SignupAPI from '../api/signup-api';
+import AuthAPI, { LoginRequest } from '../api/auth-api';
+import UserAPI, { FindUserRequest, PasswordRequest } from '../api/user-api';
+
+import { config } from '../config';
 import GlobalEventBus from '../globaleventbus';
 import Router from '../services/router';
 import { UserData } from '../user';
@@ -16,32 +12,15 @@ export default class UserController {
 
     private _router: Router;
 
-    private _loginAPI: LoginAPI;
+    private _authAPI: AuthAPI;
 
-    private _signupAPI: SignupAPI;
-
-    private _logoutAPI: LogoutAPI;
-
-    private _getUserAPI: GetUserAPI;
-
-    private _saveInfoAPI: SaveInfoAPI;
-
-    private _savePasswordAPI: SavePasswordAPI;
-
-    private _changeAvatarAPI: ChangeAvatarAPI;
-
-    private _findUserAPI: FindUserAPI;
+    private _userAPI: UserAPI;
 
     constructor(router: Router) {
         this._router = router;
-        this._loginAPI = new LoginAPI();
-        this._signupAPI = new SignupAPI();
-        this._logoutAPI = new LogoutAPI();
-        this._getUserAPI = new GetUserAPI();
-        this._saveInfoAPI = new SaveInfoAPI();
-        this._savePasswordAPI = new SavePasswordAPI();
-        this._changeAvatarAPI = new ChangeAvatarAPI();
-        this._findUserAPI = new FindUserAPI();
+
+        this._authAPI = new AuthAPI(config.baseAPIUrl);
+        this._userAPI = new UserAPI(config.baseAPIUrl);
     }
 
     public async init() {
@@ -51,7 +30,7 @@ export default class UserController {
 
     public async getUser() {
         try {
-            const user = await this._getUserAPI.request();
+            const user = await this._authAPI.getUser();
             GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_GETUSER_SUCCEED, user);
         } catch (error) {
             GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_GETUSER_FAILED, error);
@@ -60,7 +39,7 @@ export default class UserController {
 
     public async logout(successPath?: string) {
         try {
-            this._logoutAPI.request();
+            this._authAPI.logout();
 
             // TODO: Переделать через EventBus
             if (successPath) {
@@ -82,7 +61,7 @@ export default class UserController {
         });
 
         try {
-            await this._loginAPI.request(user);
+            await this._authAPI.login(user);
 
             // TODO: Переделать через EventBus
             this._router.go(successPath);
@@ -95,15 +74,15 @@ export default class UserController {
     }
 
     public async signup(inputs: Input[], successPath: string) {
-        const user: UserData = {};
+        const data: UserData = {};
 
         inputs.forEach(input => {
             const element = input.element as HTMLInputElement;
-            (<any>user)[element.name] = element.value;
+            (<any>data)[element.name] = element.value;
         });
 
         try {
-            await this._signupAPI.request(user);
+            await this._authAPI.signup(data);
             this._router.go(successPath);
             GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_SIGNUP_SUCCEED);
 
@@ -113,21 +92,21 @@ export default class UserController {
     }    
 
     public async findUser(inputs: Input[], options: { succeedEvent: string, failedEvent: string }) {
-        const user: UserData = {};
+        const data: FindUserRequest = { login: '' };
 
         inputs.forEach(input => {
             const element = input.element as HTMLInputElement;
-            (<any>user)[element.name] = element.value;
+            (<any>data)[element.name] = element.value;
         });
 
         try {
-            const result = await this._findUserAPI.request({ data: user });
+            const result = await this._userAPI.findUser(data);
             const users = JSON.parse(result.responseText);
             let found = false;
             let uFound;
 
             users.forEach((u: any) => {
-                if (u.login === user.login) {
+                if (u.login === data.login) {
                     found = true;
                     uFound = u;
                 }
@@ -145,16 +124,16 @@ export default class UserController {
     }
 
     public async saveInfo(inputs: Input[]) {
-        const user: UserData = {};
+        const data: UserData = {};
 
         inputs.forEach(input => {
             const element = input.element as HTMLInputElement;
-            (<any>user)[element.name] = element.value;
+            (<any>data)[element.name] = element.value;
         });
 
         try {
-            await this._saveInfoAPI.update(user);
-            GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_SAVEINFO_SUCCEED, user);
+            await this._userAPI.saveInfo(data);
+            GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_SAVEINFO_SUCCEED, data);
 
         } catch (error) {
             GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_SAVEINFO_FAILED, error);
@@ -170,7 +149,7 @@ export default class UserController {
         });
 
         try {
-            await this._savePasswordAPI.update(data);
+            await this._userAPI.savePassword(data);
             GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_SAVEPASSWORD_SUCCEED);
 
         } catch (error) {
@@ -184,7 +163,7 @@ export default class UserController {
             for (var key of formData.keys()) {
                 console.log(key, formData.get(key));
              }            
-            const result = await this._changeAvatarAPI.update(formData);
+            const result = await this._userAPI.changeAvatar(formData);
             GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_CHANGEAVATAR_SUCCEED, result);
 
         } catch (error) {

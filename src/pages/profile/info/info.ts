@@ -1,5 +1,4 @@
 import tmpl from './info.hbs';
-import Block from '../../../utils/block';
 import compile from '../../../utils/compile';
 
 import { Link, Avatar } from '../../../components';
@@ -7,9 +6,10 @@ import { renderDOM } from '../../../utils/renderdom';
 import GlobalEventBus from '../../../utils/globaleventbus';
 import User from '../../../utils/user';
 import { ModalAvatar } from '../../modals';
+import Page, { PageProps } from '../../../utils/page';
 
-export class ProfileInfo extends Block {
-  constructor(props: any) {
+export class ProfileInfo extends Page {
+  constructor(props: PageProps) {
     super('div', props);
 
     this.g.EventBus.on(GlobalEventBus.EVENTS.USERDATA_UPDATED, this._onUserDataUpdated.bind(this));

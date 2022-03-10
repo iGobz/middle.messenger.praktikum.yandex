@@ -15,6 +15,7 @@
         "esModuleInterop": true,
         "allowJs": true,
         "moduleResolution": "Node",
+        "allowSyntheticDefaultImports": true,
         "typeRoots": [
             "./src/@types", 
             "./node_modules/@types"

@@ -1,14 +1,14 @@
 import tmpl from './add-user.hbs';
-import Block from '../../../utils/block';
 import compile from '../../../utils/compile';
 import { Button, ErrorMessage, Input } from '../../../components';
 import GlobalEventBus from '../../../utils/globaleventbus';
+import Page, { PageProps } from '../../../utils/page';
 
-export class ModalAddUser extends Block {
+export class ModalAddUser extends Page {
 
-  _errorMessage: ErrorMessage;
+  private _errorMessage: ErrorMessage;
 
-  constructor(props: any) {
+  constructor(props: PageProps) {
     super('div', {
       ...props,
       events: {
@@ -52,7 +52,6 @@ export class ModalAddUser extends Block {
       'class': this.props.styles.error,
     });
     console.log('Error on find user: ', text);
-    // throw new Error('Find User Error');
   }
 
   private _onActionFindUserSucceed(data: any) {
