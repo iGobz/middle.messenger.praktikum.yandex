@@ -1,5 +1,4 @@
 import tmpl from './conversation.hbs';
-import Block from '../../utils/block';
 import compile from '../../utils/compile';
 
 import { Link, Input, Message, Image, Label } from '../../components';
@@ -7,6 +6,8 @@ import GlobalEventBus from '../../utils/globaleventbus';
 import User from '../../utils/user';
 import { renderDOM } from '../../utils/renderdom';
 import { ChatActions } from '../modals';
+import { config } from '../../utils/config';
+import Page, { PageProps } from '../../utils/page';
 
 interface MessageData {
     id: number,
@@ -31,11 +32,11 @@ interface ChatUserData {
     role: string,
 }
 
-export class Conversation extends Block {
+export class Conversation extends Page {
 
-    _messages: Message[];
+    private _messages: Message[];
 
-    constructor(props: any) {
+    constructor(props: PageProps) {
         super('div', props);
 
         this.g.EventBus.on(
@@ -60,7 +61,7 @@ export class Conversation extends Block {
 
             let avatar = this.props.icons.user;
             if (user.avatar) {
-                avatar = 'https://ya-praktikum.tech/api/v2/resources' + user.avatar;
+                avatar = config.resourceUrl + user.avatar;
             }
             const displayName = user.display_name
                 ? user.display_name
@@ -97,8 +98,6 @@ export class Conversation extends Block {
     private _onMessagesReceived(data: any) {
 
         const messagesData: MessageData[] | MessageData = JSON.parse(data);
-        const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля',
-                        'августа', 'сентября', 'октября', 'ноября', 'декабря'];
 
         let previousDate: Date;
 
@@ -111,7 +110,7 @@ export class Conversation extends Block {
                 if (!previousDate || previousDate.toLocaleDateString() !== messageDate.toLocaleDateString()) {
                     this._messages.push(new Message({
                         isMessage: false,
-                        date: `${messageDate.getDate()} ${months[messageDate.getMonth()]}`,
+                        date: `${messageDate.getDate()} ${config.monthsNames[messageDate.getMonth()]}`,
                         styles: this.props.styles,
                     }));
                 }
@@ -168,11 +167,7 @@ export class Conversation extends Block {
             class: this.props.styles['actions-button'],
             events: {
                 click: () => {
-                    renderDOM('#modal', new ChatActions({
-                        chatId: this.props.chatId,
-                        styles: this.props.styles,
-                        icons: this.props.icons,
-                    }));
+                    renderDOM('#modal', new ChatActions(this.props));
                 },
             },
         });

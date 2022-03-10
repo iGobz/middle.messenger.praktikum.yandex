@@ -50,6 +50,7 @@ export default class GlobalEventBus {
     VALIDATE_CREATECHAT_FAILED: 'validate:create_chat:failed',
     ACTION_CREATECHAT: 'action:create_chat',
     ACTION_CREATECHAT_FAILED: 'action:create_chat:failed',
+    ACTION_CREATECHAT_SUCCEED: 'action:create_chat:succeed',
 
     ACTION_FINDUSER: 'action:find_user',
     ACTION_ADDFINDUSER_SUCCEED: 'action:add_find_user:succeed',
@@ -82,8 +83,6 @@ export default class GlobalEventBus {
     VALIDATE_SENDMESSAGE_FAILED: 'validate:send_message:failed',
     ACTION_SENDMESSAGE: 'action:send_message',
     ACTION_SENDMESSAGE_FAILED: 'action:send_message:failed',
-
-    
 
     MESSAGES_RECEIVED: 'messages:received',
     USERDATA_UPDATED: 'user_data:updated',

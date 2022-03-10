@@ -7,3 +7,4 @@ declare module '*.handlebars' {
   const templateFunction: (param?: any) => string;
   export default templateFunction;
 }
+

@@ -1,7 +1,6 @@
 import { v4 as makeUUID } from 'uuid';
 import EventBus from './eventbus';
 import GlobalEventBus from './globaleventbus';
-
 export default class Block {
   static EVENTS = {
     INIT: 'init',

@@ -1,3 +1,4 @@
+import { config } from '../config';
 import GlobalEventBus from '../globaleventbus';
 
 export interface WSMessage {
@@ -13,7 +14,7 @@ export default class WebSocketsAPI {
     connect(data: { userId: number, chatId: number, token: string }) {
 
         this._socket = new WebSocket(
-            `wss://ya-praktikum.tech/ws/chats/${data.userId}/${data.chatId}/${data.token}`,
+            `${config.websocketUrl}/${data.userId}/${data.chatId}/${data.token}`,
         );
 
         this._socket.addEventListener('message', (e: MessageEvent) => {

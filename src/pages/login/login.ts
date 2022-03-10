@@ -1,18 +1,18 @@
 import tmpl from './login.hbs';
-import Block from '../../utils/block';
 import compile from '../../utils/compile';
 
 import { Label, Input, Button, ErrorMessage } from '../../components';
 import { isValid } from '../../utils/validator';
 import GlobalEventBus from '../../utils/globaleventbus';
+import Page, { PageProps } from '../../utils/page';
 
 
 
-export class Login extends Block {
+export class Login extends Page {
 
-  _errorMessage: ErrorMessage;
+  private _errorMessage: ErrorMessage;
 
-  constructor(props:any) {
+  constructor(props: PageProps) {
     super('div', props);
     this.g.EventBus.on(GlobalEventBus.EVENTS.VALIDATE_LOGIN_FAILED, this._onValidateLoginFailed.bind(this));
     this.g.EventBus.on(GlobalEventBus.EVENTS.ACTION_LOGIN_FAILED, this._onActionLoginFailed.bind(this));

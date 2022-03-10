@@ -1,11 +1,11 @@
 import tmpl from './avatar.hbs';
-import Block from '../../../utils/block';
 import compile from '../../../utils/compile';
 import { Button, Input, Label, Link } from '../../../components';
 import GlobalEventBus from '../../../utils/globaleventbus';
+import Page, { PageProps } from '../../../utils/page';
 
-export class ModalAvatar extends Block {
-  constructor(props: any) {
+export class ModalAvatar extends Page {
+  constructor(props: PageProps) {
     super('div', {
       ...props,
       events: {
@@ -34,8 +34,7 @@ export class ModalAvatar extends Block {
 
   render() {
 
-    const labelFileName = new Label({
-    });
+    const labelFileName = new Label({});
 
     const inputChooseFile = new Input({
       type: 'file',
