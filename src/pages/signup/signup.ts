@@ -1,18 +1,50 @@
 import tmpl from './signup.hbs';
-
-import Block from '../../utils/block';
-import { Label, Input, Button } from '../../components';
-
 import compile from '../../utils/compile';
-import { isValid } from '../../utils/validator';
-import { renderDOM } from '../../utils/renderdom';
+import { Label, Input, Button, ErrorMessage } from '../../components';
 
-export class Signup extends Block {
-  constructor(props: any) {
+import { isValid } from '../../utils/validator';
+import GlobalEventBus from '../../utils/globaleventbus';
+import Page, { PageProps } from '../../utils/page';
+
+export class Signup extends Page {
+
+  private _errorMessage: ErrorMessage;
+
+  constructor(props: PageProps) {
     super('div', props);
+    this.g.EventBus.on(GlobalEventBus.EVENTS.VALIDATE_SIGNUP_FAILED, this._onValidateSignupFailed.bind(this));
+    this.g.EventBus.on(GlobalEventBus.EVENTS.ACTION_SIGNUP_FAILED, this._onActionSignupFailed.bind(this));
+    this.g.EventBus.on(GlobalEventBus.EVENTS.ACTION_SIGNUP_SUCCEED, this._onActionSignupSucceed.bind(this));
   }
 
-  _onFocusChange(event: Event) {
+  private _onValidateSignupFailed(formData: { [index: string]: any }) {
+
+    Object.keys(formData).forEach(key => {
+      if (!formData[key].isValid) {
+        const element = document.querySelector(`input[name=${key}]`);
+        element?.classList.add(this.props.styles['input-error']);
+      }
+    });
+    throw new Error('Validation Error');
+  }
+
+  private _onActionSignupFailed(data: XMLHttpRequest) {
+
+    const text = JSON.parse(data.responseText).reason;
+    this._errorMessage.setProps({
+      'text': text,
+      'class': this.props.styles.error,
+    });
+    console.log('Error on signup: ', text);
+  }
+
+  private _onActionSignupSucceed() {
+    this.g.EventBus.emit(GlobalEventBus.EVENTS.ACTION_GETUSER);
+    this.g.EventBus.emit(GlobalEventBus.EVENTS.ACTION_GETCHATS);
+  }
+
+
+  private _onFocusChange(event: Event) {
     const element = event.target as HTMLInputElement;
     if (!isValid(element)) {
       element.classList.add(this.props.styles['input-error']);
@@ -28,7 +60,7 @@ export class Signup extends Block {
   }
 
   render() {
-    
+
     const inputEmail = new Input({
       type: 'text',
       class: `${this.props.styles.input} ${this.props.styles['input-email']}`,
@@ -94,13 +126,16 @@ export class Signup extends Block {
       type: 'password',
       class: `${this.props.styles.input} ${this.props.styles['input-password']}`,
       name: 'password2',
-      validationType: 'password',
+      validationType: 'password,name=password',
       events: {
         blur: this._onFocusChange.bind(this),
         focus: this._onFocusChange.bind(this),
       },
     });
 
+    const errorMessage = new ErrorMessage({
+      class: `${this.props.styles.error} ${this.props.styles['error-hide']}`,
+    });
 
     const buttonSignup = new Button({
       text: 'Зарегистрироваться',
@@ -109,29 +144,22 @@ export class Signup extends Block {
         click: (e) => {
           e.preventDefault();
 
+          this._errorMessage.setProps({
+            'text': '',
+            'class': this.props.styles.error,
+          });
+
           const inputs = [
-            inputEmail, inputLogin, inputFirstName, inputSecondName, 
+            inputEmail, inputLogin, inputFirstName, inputSecondName,
             inputPhone, inputPassword, inputPassword2,
           ];
 
-          const formData: { [index: string]: any } = {};
-          let isFormValid = true;
-          inputs.map((input) => {
-            const el = input.element as HTMLInputElement;
-            if (!isValid(el)) {
-              isFormValid = false;
-              el.classList.add(this.props.styles['input-error']);
-            } else {
-              const name = el.getAttribute('name');
-              const { value } = el;
-              if (name) {
-                formData[name] = value;
-              }
-            }
-          });
-          if (isFormValid) {
-            console.log(formData);
-            renderDOM('#app', this.props.buttonClickSignup);
+          try {
+            this.g.EventBus.emit(GlobalEventBus.EVENTS.VALIDATE_SIGNUP, inputs);
+            this.g.EventBus.emit(GlobalEventBus.EVENTS.ACTION_SIGNUP, inputs, '/chats');
+
+          } catch (error) {
+            console.log('Error caught', error);
           }
         },
       },
@@ -140,7 +168,11 @@ export class Signup extends Block {
       text: 'Войти',
       class: `${this.props.styles.button} ${this.props.styles['signup-form-button-secondary']}`,
       events: {
-        click: (e) => { e.preventDefault(); renderDOM('#app', this.props.buttonClickLogin); },
+        click: (e) => {
+          e.preventDefault();
+          this.props.router.go('/');
+          // renderDOM('#app', this.props.buttonClickLogin);
+        },
       },
     });
 
@@ -173,6 +205,8 @@ export class Signup extends Block {
       class: `${this.props.styles.label} ${this.props.styles['form-label']}`,
     });
 
+    this._errorMessage = errorMessage;
+
     return compile(tmpl, {
       styles: this.props.styles,
       labelEmail,
@@ -189,6 +223,7 @@ export class Signup extends Block {
       inputPhone,
       inputPassword,
       inputPassword2,
+      errorMessage,
       buttonLogin,
       buttonSignup,
     });

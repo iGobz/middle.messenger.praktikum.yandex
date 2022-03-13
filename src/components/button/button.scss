@@ -8,4 +8,9 @@
     height: 37px;
     border-width: 0px;
     margin: auto;
+    cursor: pointer;
+}
+
+.button-primary-loading {    
+    color: $primary-background-hover;
 }

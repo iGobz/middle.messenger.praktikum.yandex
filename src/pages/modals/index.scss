@@ -1,4 +1,9 @@
 @import './avatar/avatar.scss';
+@import './create-chat/create-chat.scss';
+@import './chat-actions/chat-actions.scss';
+@import './add-user/add-user.scss';
+@import './delete-user/delete-user.scss';
+@import './confirm/confirm.scss';
 
 .modal-container {
     position: absolute;
@@ -28,4 +33,9 @@
 
     box-sizing: border-box;
     padding: 30px;
+}
+
+.modal-popup-small {
+    @extend .modal-popup;
+    height: 150px;
 }

@@ -1,5 +1,5 @@
 {
-  "name": "sprint_2",
+  "name": "sprint_3",
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -7,7 +7,8 @@
     "build": "parcel build src/*.html --target app --dist-dir dist --public-url ./ --no-source-maps --no-cache --no-optimize",
     "start": "npm run build && node server.ts",
     "eslint": "eslint . --ext .ts,.js",
-    "eslint:fix": "eslint . --ext .ts,.js --fix"
+    "eslint:fix": "eslint . --ext .ts,.js --fix",
+    "test": "mocha -r ts-node/register"
   },
   "engines": {
     "node": ">=12"
@@ -22,23 +23,30 @@
   "author": "Ivan Kuznetsov",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.17.2",
     "handlebars": "^4.7.7",
-    "uuid": "^8.3.2",
-    "express": "^4.17.2"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@babel/register": "^7.17.0",
     "@parcel/config-default": "^2.2.1",
     "@parcel/resolver-glob": "^2.2.1",
     "@parcel/transformer-sass": "^2.2.1",
+    "@types/chai": "^4.3.0",
+    "@types/jsdom": "^16.2.14",
+    "@types/mocha": "^9.1.0",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.11.0",
     "@typescript-eslint/parser": "^5.10.0",
     "autoprefixer": "^10.4.2",
+    "chai": "^4.3.6",
     "eslint": "^8.7.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^16.1.0",
     "eslint-plugin-import": "^2.25.4",
     "express": "^4.17.2",
+    "jsdom": "^19.0.0",
+    "mocha": "^9.2.1",
     "parcel": "^2.2.1",
     "parcel-plugin-handlebars-precompile": "^1.0.2",
     "parcel-transformer-hbs": "^1.0.4",
@@ -47,8 +55,10 @@
     "sass": "^1.49.0",
     "stylelint": "^14.2.0",
     "stylelint-config-standard": "^25.0.0",
+    "ts-node": "^10.6.0",
     "typescript": "^4.5.5",
     "typescript-plugin-css-modules": "^3.4.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "xhr2": "^0.2.1"
   }
 }

@@ -1,0 +1,5 @@
+<svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<line x1="6.88909" y1="6.8891" x2="14.6673" y2="14.6673" stroke="#3369F3" stroke-width="1.5"/>
+<line x1="6.88909" y1="14.6673" x2="14.6673" y2="6.88913" stroke="#3369F3" stroke-width="1.5"/>
+<path d="M0.75 11C0.75 5.33908 5.33908 0.75 11 0.75C16.6609 0.75 21.25 5.33908 21.25 11V21.25H11C5.33908 21.25 0.75 16.6609 0.75 11Z" stroke="#3369F3" stroke-width="1.5"/>
+</svg>

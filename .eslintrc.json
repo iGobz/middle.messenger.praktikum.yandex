@@ -10,6 +10,7 @@
       "no-undef": "off",
       "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/default-param-last": "off",
+      "@typescript-eslint/indent": "off",
       "import/prefer-default-export": "off",
       "react/jsx-filename-extension": [0],
       "import/extensions": [

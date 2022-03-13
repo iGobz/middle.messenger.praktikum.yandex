@@ -10,9 +10,11 @@ interface InputProps {
   placeholder?: string,
   value?: string,
   validationType?: string,
+  accept?: string,
   events?: {
     blur?: () => void,
-    focus?: () => void
+    focus?: () => void,
+    change?: (e: Event) => void
   }
 }
 

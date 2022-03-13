@@ -1,6 +1,9 @@
 import tmpl from './avatar.hbs';
 import Block from '../../utils/block';
 import compile from '../../utils/compile';
+import User from '../../utils/user';
+import { AvatarImage } from '../avatar-image';
+import { config } from '../../utils/config';
 
 interface AvatarProps {
   events?: {
@@ -9,11 +12,29 @@ interface AvatarProps {
 }
 
 export class Avatar extends Block {
+
+  private _avatarImage: AvatarImage;
+
   constructor(props: AvatarProps) {
     super('div', props);
   }
 
   render() {
-    return compile(tmpl, this.props);
+
+    const src = User.instance.getData('avatar') 
+                ? config.resourceUrl + User.instance.getData('avatar')
+                : this.props.icons.user;
+
+    const avatarImage = new AvatarImage({
+      class: this.props.styles['profile-avatar-image'],
+      src: src,
+    });
+
+    this._avatarImage = avatarImage;
+
+    return compile(tmpl, {
+      avatarImage,
+      ...this.props,
+    });
   }
 }

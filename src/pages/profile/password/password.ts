@@ -1,19 +1,69 @@
 import tmpl from './password.hbs';
-import Block from '../../../utils/block';
 import {
-  Label, Input, Button, Link,
+  Label, Input, Button, Link, ErrorMessage, AvatarImage,
 } from '../../../components';
 
 import compile from '../../../utils/compile';
 import { isValid } from '../../../utils/validator';
-import { renderDOM } from '../../../utils/renderdom';
+import GlobalEventBus from '../../../utils/globaleventbus';
+import User from '../../../utils/user';
+import { config } from '../../../utils/config';
+import Page, { PageProps } from '../../../utils/page';
 
-export class ProfilePassword extends Block {
-  constructor(props: any) {
+export class ProfilePassword extends Page {
+
+  private _errorMessage: ErrorMessage;
+
+  constructor(props: PageProps) {
     super('div', props);
+    this.g.EventBus.on(
+      GlobalEventBus.EVENTS.VALIDATE_SAVEPASSWORD_FAILED,
+      this._onValidateSavePasswordFailed.bind(this));
+    this.g.EventBus.on(
+      GlobalEventBus.EVENTS.ACTION_SAVEPASSWORD_FAILED,
+      this._onActionSavePasswordFailed.bind(this));
+    this.g.EventBus.on(
+      GlobalEventBus.EVENTS.ACTION_SAVEPASSWORD_SUCCEED,
+      this._onActionSavePasswordSucceed.bind(this));
+    this.g.EventBus.on(GlobalEventBus.EVENTS.USERDATA_UPDATED,
+      this._onUserDataUpdated.bind(this));
   }
 
-  _onFocusChange(event: Event) {
+  private _onUserDataUpdated(user: User) {
+      this.setProps({
+          user: user.getData(),
+      });
+  }
+
+  private _onValidateSavePasswordFailed(formData: { [index: string]: any }) {
+
+    Object.keys(formData).forEach(key => {
+      if (!formData[key].isValid) {
+        const element = document.querySelector(`input[name=${key}]`);
+        element?.classList.add(this.props.styles['input-error']);
+        element?.previousElementSibling?.classList.add(this.props.styles['input-error']);
+      }
+    });
+    throw new Error('Validation Error');
+  }
+
+  private _onActionSavePasswordFailed(res: XMLHttpRequest) {
+    const text = JSON.parse(res.responseText).reason;
+    this._errorMessage.setProps({
+      'text': text,
+      'class': this.props.styles.error,
+    });
+  }
+
+  private _onActionSavePasswordSucceed() {
+    this._errorMessage.setProps({
+      'text': 'Password saved',
+      'class': this.props.styles.error,
+    });
+  }
+
+
+  private _onFocusChange(event: Event) {
     const element = event.target as HTMLInputElement;
     if (!isValid(element)) {
       element.classList.add(this.props.styles['input-error']);
@@ -34,6 +84,15 @@ export class ProfilePassword extends Block {
   }
 
   render() {
+
+    const src = User.instance.getData('avatar')
+      ? config.resourceUrl + User.instance.getData('avatar')
+      : this.props.icons.user;
+
+    const avatarImage = new AvatarImage({
+      class: this.props.styles['profile-avatar-image'],
+      src,
+    });
 
     const inputOldPassword = new Input({
       type: 'password',
@@ -71,9 +130,23 @@ export class ProfilePassword extends Block {
       imageBeforeClass: this.props.styles['profile-return-button'],
       imageBeforeSrc: this.props.icons.arrowback,
       events: {
-        click: () => { renderDOM('#app', this.props.arrowBack); },
+        click: () => {
+          this._errorMessage.setProps({
+            'text': '',
+            'class': `${this.props.styles.error} ${this.props.styles['error-hide']}`,
+          });
+          this.props.router.go('/settings');
+        },
       },
     });
+
+    const errorMessage = new ErrorMessage({
+      class: `${this.props.styles.error} ${this.props.styles['error-hide']}`,
+    });
+
+    const inputs = [
+      inputOldPassword, inputNewPassword, inputNewPassword2,
+    ];
 
     const buttonSave = new Button({
       text: 'Сохранить',
@@ -82,29 +155,17 @@ export class ProfilePassword extends Block {
         click: (e) => {
           e.preventDefault();
 
-          const inputs = [
-            inputOldPassword, inputNewPassword, inputNewPassword2,
-          ];
-
-          const formData: { [index: string]: any } = {};
-          let isFormValid = true;
-          inputs.map((input) => {
-            const el = input.element as HTMLInputElement;
-            if (!isValid(el)) {
-              isFormValid = false;
-              el.classList.add(this.props.styles['input-error']);
-              el.previousElementSibling?.classList.add(this.props.styles['input-error']);
-            } else {
-              const name = el.getAttribute('name');
-              const { value } = el;
-              if (name) {
-                formData[name] = value;
-              }
-            }
+          this._errorMessage.setProps({
+            'class': `${this.props.styles.error} ${this.props.styles['error-hide']}`,
           });
-          if (isFormValid) {
-            console.log(formData);
-            console.log('Save clicked');
+
+
+          try {
+            this.g.EventBus.emit(GlobalEventBus.EVENTS.VALIDATE_SAVEPASSWORD, inputs);
+            this.g.EventBus.emit(GlobalEventBus.EVENTS.ACTION_SAVEPASSWORD, inputs);
+
+          } catch (error) {
+            console.log('Error caught', error);
           }
         },
       },
@@ -123,9 +184,12 @@ export class ProfilePassword extends Block {
       class: this.props.styles['profile-info-field-name'],
     });
 
+    this._errorMessage = errorMessage;
+
     return compile(tmpl, {
       styles: this.props.styles,
       images: this.props.images,
+      avatarImage,
       labelOldPassword,
       labelNewPassword,
       labelNewPassword2,
@@ -133,6 +197,7 @@ export class ProfilePassword extends Block {
       inputNewPassword,
       inputNewPassword2,
       linkProfilePasswordReturn,
+      errorMessage,
       buttonSave,
     });
   }
