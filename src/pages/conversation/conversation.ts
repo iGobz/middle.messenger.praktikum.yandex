@@ -53,7 +53,7 @@ export class Conversation extends Page {
         this._messages = [];
     }
 
-    private _onGetChatUsersSucceed(data: any) {
+    private _onGetChatUsersSucceed(data: { chatId: number, users: ChatUserData[] }) {
 
         const { users }: { users: ChatUserData[] } = data;
         const chatUsers: Image[] = [];
@@ -96,7 +96,7 @@ export class Conversation extends Page {
         throw new Error('Validation Error');
     }
 
-    private _onMessagesReceived(data: any) {
+    private _onMessagesReceived(data: string) {
 
         const messagesData: MessageData[] | MessageData = JSON.parse(data);
 

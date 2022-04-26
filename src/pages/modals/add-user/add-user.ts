@@ -3,6 +3,7 @@ import compile from '../../../utils/compile';
 import { Button, ErrorMessage, Input } from '../../../components';
 import { GlobalEvents } from '../../../utils/globaleventbus';
 import Page, { PageProps } from '../../../utils/page';
+import { FormDataType } from '../../../utils/types';
 
 export class ModalAddUser extends Page {
 
@@ -33,7 +34,7 @@ export class ModalAddUser extends Page {
       this._onActionAddChatUserSucceed.bind(this));
   }
 
-  private _onValidateAddChatUserFailed(formData: { [index: string]: any }) {
+  private _onValidateAddChatUserFailed(formData: FormDataType) {
 
     Object.keys(formData).forEach(key => {
       if (!formData[key].isValid) {
