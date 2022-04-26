@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      # Check for npm updates on Sundays
+      day: "sunday"
+    target-branch: "sprint_4"
+    # Labels on pull requests for security and version updates
+    labels:
+      - "npm dependencies"
