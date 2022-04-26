@@ -7,7 +7,7 @@
     "build": "webpack --mode production",
     "watch": "webpack --mode development --watch",
     "dev:start": "webpack-dev-server --mode development --open",
-    "start": "npm run build && node server.ts",
+    "start": "npm run build && ts-node server.ts",
     "eslint": "eslint . --ext .ts,.js",
     "eslint:fix": "eslint . --ext .ts,.js --fix",
     "test": "mocha -r ts-node/register",

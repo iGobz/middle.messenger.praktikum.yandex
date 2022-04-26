@@ -48,5 +48,11 @@ https://www.figma.com/file/2cCGHvnNzdfwK6c4mBBDmj/%D0%AF.%D0%A7%D0%B0%D1%82?node
 - Сделаны тесты роутера, отправки запросов и компонента
 ##
 
+## Изменения четвертого спринта
+
+- Переход с parcel на webpack
+##
+
+
 Pull request
 [#4](https://github.com/iGobz/middle.messenger.praktikum.yandex/pull/4)
