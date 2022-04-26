@@ -3,11 +3,11 @@ import Block from '../block';
 import Route from './route';
 import Router from './router';
 
-const jsdom = require('jsdom');
+import jsdom from 'jsdom';
 const { JSDOM } = jsdom;
 
 class Login extends Block {
-    constructor(props:any) {
+    constructor(props: any) {
         super('div', props);
     }
 
@@ -19,7 +19,7 @@ class Login extends Block {
 }
 
 class Signup extends Block {
-    constructor(props:any) {
+    constructor(props: any) {
         super('div', props);
     }
 
@@ -32,12 +32,14 @@ class Signup extends Block {
 
 const dom = new JSDOM(
     '<html><body><div id="app"></div></body></html>',
-    { url: 'http://localhost' },
-    { runScripts: 'dangerously' },
+    {
+        url: 'http://localhost',
+        runScripts: 'dangerously'
+    },
   );
 
 global.document = dom.window.document;
-global.window = dom.window;
+// global.window = dom.window;
 if (dom.window.document.defaultView) {
     global.DocumentFragment = dom.window.document.defaultView.DocumentFragment;
 }
@@ -47,7 +49,7 @@ const signup = new Signup({ styles: {} });
 
 
 describe('Router', function () {
-    const router = new Router('#app');
+    const router = Router.getInstance('#app');
     router.start();
         
     it('Should add "/" page to routes list', function () {

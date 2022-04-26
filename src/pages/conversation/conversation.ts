@@ -2,12 +2,13 @@ import tmpl from './conversation.hbs';
 import compile from '../../utils/compile';
 
 import { Link, Input, Message, Image, Label } from '../../components';
-import GlobalEventBus from '../../utils/globaleventbus';
+import { GlobalEvents } from '../../utils/globaleventbus';
 import User from '../../utils/user';
 import { renderDOM } from '../../utils/renderdom';
 import { ChatActions } from '../modals';
 import { config } from '../../utils/config';
 import Page, { PageProps } from '../../utils/page';
+import { FormDataType } from '../../utils/types';
 
 interface MessageData {
     id: number,
@@ -40,13 +41,13 @@ export class Conversation extends Page {
         super('div', props);
 
         this.g.EventBus.on(
-            GlobalEventBus.EVENTS.MESSAGES_RECEIVED,
+            GlobalEvents.MESSAGES_RECEIVED,
             this._onMessagesReceived.bind(this));
         this.g.EventBus.on(
-            GlobalEventBus.EVENTS.ACTION_GETCHATUSERS_SUCCEED,
+            GlobalEvents.ACTION_GETCHATUSERS_SUCCEED,
             this._onGetChatUsersSucceed.bind(this));
         this.g.EventBus.on(
-            GlobalEventBus.EVENTS.VALIDATE_SENDMESSAGE_FAILED,
+            GlobalEvents.VALIDATE_SENDMESSAGE_FAILED,
             this._onValidateSendMessageFailed.bind(this));
 
         this._messages = [];
@@ -84,7 +85,7 @@ export class Conversation extends Page {
 
     }
 
-    private _onValidateSendMessageFailed(formData: { [index: string]: any }) {
+    private _onValidateSendMessageFailed(formData: FormDataType) {
 
         Object.keys(formData).forEach(key => {
             if (!formData[key].isValid) {
@@ -117,7 +118,7 @@ export class Conversation extends Page {
                 previousDate = messageDate;
 
                 const timeString = `${messageDate.getHours()}:${messageDate.getMinutes()}`;
-                const self = User.instance.getData('id') == message.user_id;
+                const self = User.getInstance().getData('id') == message.user_id;
 
                 this._messages.push(new Message({
                     isMessage: true,
@@ -139,7 +140,7 @@ export class Conversation extends Page {
 
             const messageDate = new Date(messagesData.time);
             const timeString = `${messageDate.getHours()}:${messageDate.getMinutes()}`;
-            const self = User.instance.getData('id') == messagesData.user_id;
+            const self = User.getInstance().getData('id') == messagesData.user_id;
 
             this._messages.push(new Message({
                 isMessage: true,
@@ -188,8 +189,8 @@ export class Conversation extends Page {
                     const inputs = [inputMessage];
 
                     try {
-                        this.g.EventBus.emit(GlobalEventBus.EVENTS.VALIDATE_SENDMESSAGE, inputs);
-                        this.g.EventBus.emit(GlobalEventBus.EVENTS.ACTION_SENDMESSAGE, inputs);
+                        this.g.EventBus.emit(GlobalEvents.VALIDATE_SENDMESSAGE, inputs);
+                        this.g.EventBus.emit(GlobalEvents.ACTION_SENDMESSAGE, inputs);
 
                     } catch (error) {
                         console.log('Error on send message: ', error);

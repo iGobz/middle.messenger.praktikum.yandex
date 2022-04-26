@@ -22,7 +22,7 @@ export default class EventBus {
     }
 
     this.listeners[event] = this.listeners[event].filter(
-      (listener: () => {}) => listener !== callback,
+      (listener: () => Record<string, unknown>) => listener !== callback,
     );
   }
 

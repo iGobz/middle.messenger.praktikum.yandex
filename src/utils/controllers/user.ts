@@ -3,7 +3,7 @@ import AuthAPI, { LoginRequest } from '../api/auth-api';
 import UserAPI, { FindUserRequest, PasswordRequest } from '../api/user-api';
 
 import { config } from '../config';
-import GlobalEventBus from '../globaleventbus';
+import GlobalEventBus, { GlobalEvents } from '../globaleventbus';
 import Router from '../services/router';
 import { UserData } from '../user';
 
@@ -23,17 +23,17 @@ export default class UserController {
         this._userAPI = new UserAPI(config.baseAPIUrl);
     }
 
-    public async init() {
-        GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_GETUSER);
-        GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_GETCHATS);
+    public init() {
+        GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.ACTION_GETUSER);
+        GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.ACTION_GETCHATS);
     }
 
     public async getUser() {
         try {
             const user = await this._authAPI.getUser();
-            GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_GETUSER_SUCCEED, user);
+            GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.ACTION_GETUSER_SUCCEED, user);
         } catch (error) {
-            GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_GETUSER_FAILED, error);
+            GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.ACTION_GETUSER_FAILED, error);
         }
     }
 
@@ -66,10 +66,10 @@ export default class UserController {
             // TODO: Переделать через EventBus
             this._router.go(successPath);
 
-            GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_LOGIN_SUCCEED);
+            GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.ACTION_LOGIN_SUCCEED);
             // Останавливаем крутилку
         } catch (error) {
-            GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_LOGIN_FAILED, error);
+            GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.ACTION_LOGIN_FAILED, error);
         }
     }
 
@@ -84,10 +84,10 @@ export default class UserController {
         try {
             await this._authAPI.signup(data);
             this._router.go(successPath);
-            GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_SIGNUP_SUCCEED);
+            GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.ACTION_SIGNUP_SUCCEED);
 
         } catch (error) {
-            GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_SIGNUP_FAILED, error);
+            GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.ACTION_SIGNUP_FAILED, error);
         }
     }    
 
@@ -113,13 +113,13 @@ export default class UserController {
             });
             if (!found) {
                 const error = JSON.stringify({ reason: 'User not found' });
-                GlobalEventBus.instance.EventBus.emit(options.failedEvent, error);
+                GlobalEventBus.getInstance().EventBus.emit(options.failedEvent, error);
             } else {
-                GlobalEventBus.instance.EventBus.emit(options.succeedEvent, uFound);
+                GlobalEventBus.getInstance().EventBus.emit(options.succeedEvent, uFound);
             }
 
         } catch (error) {
-            GlobalEventBus.instance.EventBus.emit(options.failedEvent, error);
+            GlobalEventBus.getInstance().EventBus.emit(options.failedEvent, error);
         }
     }
 
@@ -133,10 +133,10 @@ export default class UserController {
 
         try {
             await this._userAPI.saveInfo(data);
-            GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_SAVEINFO_SUCCEED, data);
+            GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.ACTION_SAVEINFO_SUCCEED, data);
 
         } catch (error) {
-            GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_SAVEINFO_FAILED, error);
+            GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.ACTION_SAVEINFO_FAILED, error);
         }
     }
 
@@ -150,24 +150,21 @@ export default class UserController {
 
         try {
             await this._userAPI.savePassword(data);
-            GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_SAVEPASSWORD_SUCCEED);
+            GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.ACTION_SAVEPASSWORD_SUCCEED);
 
         } catch (error) {
-            GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_SAVEPASSWORD_FAILED, error);
+            GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.ACTION_SAVEPASSWORD_FAILED, error);
         }
     }
 
     public async changeAvatar(formData: FormData) {
 
-        try {
-            for (var key of formData.keys()) {
-                console.log(key, formData.get(key));
-             }            
+        try {           
             const result = await this._userAPI.changeAvatar(formData);
-            GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_CHANGEAVATAR_SUCCEED, result);
+            GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.ACTION_CHANGEAVATAR_SUCCEED, result);
 
         } catch (error) {
-            GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.ACTION_CHANGEAVATAR_FAILED, error);
+            GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.ACTION_CHANGEAVATAR_FAILED, error);
         }
     }
 }

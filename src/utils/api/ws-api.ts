@@ -1,5 +1,5 @@
 import { config } from '../config';
-import GlobalEventBus from '../globaleventbus';
+import GlobalEventBus, { GlobalEvents } from '../globaleventbus';
 
 export interface WSMessage {
     content: string | number,
@@ -18,7 +18,7 @@ export default class WebSocketsAPI {
         );
 
         this._socket.addEventListener('message', (e: MessageEvent) => {
-            GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.MESSAGES_RECEIVED, e.data);
+            GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.MESSAGES_RECEIVED, e.data);
         });
 
         this._socket.addEventListener('open', () => {

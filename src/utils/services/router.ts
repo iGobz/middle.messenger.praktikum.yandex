@@ -14,17 +14,18 @@ export default class Router {
     history: History;
 
 
-    constructor(rootQuery: string) {
-
-        if (Router.__instance) {
-            return Router.__instance;
-        }
+    private constructor(rootQuery: string) {
 
         this.routes = [];
         this.history = window.history;
         this._rootQuery = rootQuery;
+    }
 
-        Router.__instance = this;
+    public static getInstance(rootQuery: string) {
+        if (!Router.__instance) {
+            Router.__instance = new Router(rootQuery);
+        }
+        return Router.__instance;
     }
 
     use(pathname: string, block: any) {

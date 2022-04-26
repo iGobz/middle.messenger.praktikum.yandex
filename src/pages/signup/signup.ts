@@ -3,8 +3,9 @@ import compile from '../../utils/compile';
 import { Label, Input, Button, ErrorMessage } from '../../components';
 
 import { isValid } from '../../utils/validator';
-import GlobalEventBus from '../../utils/globaleventbus';
+import { GlobalEvents } from '../../utils/globaleventbus';
 import Page, { PageProps } from '../../utils/page';
+import { FormDataType } from '../../utils/types';
 
 export class Signup extends Page {
 
@@ -12,12 +13,12 @@ export class Signup extends Page {
 
   constructor(props: PageProps) {
     super('div', props);
-    this.g.EventBus.on(GlobalEventBus.EVENTS.VALIDATE_SIGNUP_FAILED, this._onValidateSignupFailed.bind(this));
-    this.g.EventBus.on(GlobalEventBus.EVENTS.ACTION_SIGNUP_FAILED, this._onActionSignupFailed.bind(this));
-    this.g.EventBus.on(GlobalEventBus.EVENTS.ACTION_SIGNUP_SUCCEED, this._onActionSignupSucceed.bind(this));
+    this.g.EventBus.on(GlobalEvents.VALIDATE_SIGNUP_FAILED, this._onValidateSignupFailed.bind(this));
+    this.g.EventBus.on(GlobalEvents.ACTION_SIGNUP_FAILED, this._onActionSignupFailed.bind(this));
+    this.g.EventBus.on(GlobalEvents.ACTION_SIGNUP_SUCCEED, this._onActionSignupSucceed.bind(this));
   }
 
-  private _onValidateSignupFailed(formData: { [index: string]: any }) {
+  private _onValidateSignupFailed(formData: FormDataType) {
 
     Object.keys(formData).forEach(key => {
       if (!formData[key].isValid) {
@@ -25,22 +26,22 @@ export class Signup extends Page {
         element?.classList.add(this.props.styles['input-error']);
       }
     });
-    throw new Error('Validation Error');
+    throw new Error('Incorrect field value');
   }
 
   private _onActionSignupFailed(data: XMLHttpRequest) {
 
     const text = JSON.parse(data.responseText).reason;
     this._errorMessage.setProps({
-      'text': text,
-      'class': this.props.styles.error,
+      text: text,
+      class: this.props.styles.error,
     });
     console.log('Error on signup: ', text);
   }
 
   private _onActionSignupSucceed() {
-    this.g.EventBus.emit(GlobalEventBus.EVENTS.ACTION_GETUSER);
-    this.g.EventBus.emit(GlobalEventBus.EVENTS.ACTION_GETCHATS);
+    this.g.EventBus.emit(GlobalEvents.ACTION_GETUSER);
+    this.g.EventBus.emit(GlobalEvents.ACTION_GETCHATS);
   }
 
 
@@ -52,7 +53,7 @@ export class Signup extends Page {
       element.classList.remove(this.props.styles['input-error']);
     }
     if (element.name == 'password2') {
-      const password1 = (element.form?.elements as { [key: string]: any }).password;
+      const password1 = element.form?.elements.namedItem('password') as HTMLFormElement;
       if (password1 && element.value !== password1.value) {
         element.classList.add(this.props.styles['input-error']);
       }
@@ -144,22 +145,24 @@ export class Signup extends Page {
         click: (e) => {
           e.preventDefault();
 
-          this._errorMessage.setProps({
-            'text': '',
-            'class': this.props.styles.error,
-          });
 
           const inputs = [
             inputEmail, inputLogin, inputFirstName, inputSecondName,
             inputPhone, inputPassword, inputPassword2,
           ];
 
+          inputs.forEach(input => input.element.classList.remove(this.props.styles['input-error']));
+          this._errorMessage.setProps({ text: '' });
+
           try {
-            this.g.EventBus.emit(GlobalEventBus.EVENTS.VALIDATE_SIGNUP, inputs);
-            this.g.EventBus.emit(GlobalEventBus.EVENTS.ACTION_SIGNUP, inputs, '/chats');
+            this.g.EventBus.emit(GlobalEvents.VALIDATE_SIGNUP, inputs);
+            this.g.EventBus.emit(GlobalEvents.ACTION_SIGNUP, inputs, '/chats');
 
           } catch (error) {
-            console.log('Error caught', error);
+            this._errorMessage.setProps({
+                text: error,
+                class: this.props.styles.error,
+            });
           }
         },
       },

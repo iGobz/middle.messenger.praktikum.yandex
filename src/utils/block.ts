@@ -11,18 +11,18 @@ export default class Block {
 
   _element: HTMLElement;
 
-  _meta: Object = {};
+  _meta: Record<string, unknown> = {};
 
   props: any;
 
-  _id: string = '';
+  _id = '';
 
   eventBus: (() => EventBus);
 
   g: GlobalEventBus;
 
   constructor(
-    tagName: string = 'div',
+    tagName = 'div',
     props: any,
   ) {
     const eventBus = new EventBus();
@@ -39,7 +39,7 @@ export default class Block {
 
     this._registerEvents(eventBus);
 
-    this.g = GlobalEventBus.instance;
+    this.g = GlobalEventBus.getInstance();
 
     eventBus.emit(Block.EVENTS.INIT);
   }
@@ -71,7 +71,9 @@ export default class Block {
   }
 
   // Может переопределять пользователь, необязательно трогать
-  componentDidMount(_props: any) {}
+  componentDidMount(_props: any) {
+      return;
+  }
 
   dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
@@ -159,7 +161,6 @@ export default class Block {
         return typeof value === 'function' ? value.bind(target) : value;
       },
       set(target, prop: string, value) {
-        // console.log('set: ', target[prop], 'to: ', value);
         if (target[prop] !== value || typeof value === 'object') {
           target[prop] = value;
 
