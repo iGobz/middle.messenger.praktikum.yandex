@@ -3,8 +3,7 @@ import Block from '../block';
 import Route from './route';
 import Router from './router';
 
-import jsdom from 'jsdom';
-const { JSDOM } = jsdom;
+import { JSDOM } from 'jsdom';
 
 class Login extends Block {
     constructor(props: any) {
@@ -14,8 +13,8 @@ class Login extends Block {
     render() {
         const element = document.createElement('template');
         element.innerHTML = '<div>{{content}}</div>';
-        return element.content;        
-    }  
+        return element.content;
+    }
 }
 
 class Signup extends Block {
@@ -26,22 +25,21 @@ class Signup extends Block {
     render() {
         const element = document.createElement('template');
         element.innerHTML = '<div>{{content}}</div>';
-        return element.content;        
-    }  
+        return element.content;
+    }
 }
 
-const dom = new JSDOM(
+const { window } = new JSDOM(
     '<html><body><div id="app"></div></body></html>',
     {
         url: 'http://localhost',
         runScripts: 'dangerously'
     },
-  );
+);
 
-global.document = dom.window.document;
-// global.window = dom.window;
-if (dom.window.document.defaultView) {
-    global.DocumentFragment = dom.window.document.defaultView.DocumentFragment;
+global.document = window.document;
+if (global.document.defaultView) {
+    global.window = global.document.defaultView;
 }
 
 const login = new Login({ styles: {} });
@@ -51,7 +49,7 @@ const signup = new Signup({ styles: {} });
 describe('Router', function () {
     const router = Router.getInstance('#app');
     router.start();
-        
+
     it('Should add "/" page to routes list', function () {
         router.use('/', login);
         expect(router.getRoute('/')).instanceOf(Route);

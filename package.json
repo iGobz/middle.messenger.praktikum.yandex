@@ -12,8 +12,7 @@
     "eslint:fix": "eslint . --ext .ts,.js --fix",
     "test": "mocha -r ts-node/register",
     "validate": "npm-run-all --parallel test eslint",
-    "precommit": "npm run validate",
-    "prepush": "npm run validate"    
+    "precommit": "npm run validate"
   },
   "engines": {
     "node": ">=12"
@@ -79,9 +78,8 @@
     "xhr2": "0.2.1"
   },
   "husky": {
-      "hooks": {
-          "pre-commit": "npm run precommit",
-          "pre-push": "npm run prepush"
-      }
+    "hooks": {
+      "pre-commit": "npm run precommit"
+    }
   }
 }
