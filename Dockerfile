@@ -1,7 +1,7 @@
 FROM node:14.18
-RUN npm install express
 WORKDIR /var/www
-COPY server.ts server.ts
-COPY dist dist
+COPY package*.json ./
+RUN npm install
+COPY . .
 EXPOSE $PORT
-CMD node server.js
+CMD npm run start
