@@ -1,5 +1,6 @@
 import { Input } from '../components';
-import GlobalEventBus from './globaleventbus';
+import GlobalEventBus, { GlobalEvents } from './globaleventbus';
+import { FormDataType } from './types';
 
 const VALIDATION_RULES: Record<string, RegExp> = {
   login: /^[0-9a-zA-Z\-_]{3,}/,
@@ -38,8 +39,8 @@ function isValidField(data: string, type: string): boolean {
 function validateInputs(inputs: Input[]) {
 
     let isFormValid = true;
-    let formData: Record<string, any> = {};
-    let compareFields: Record<string, string> = {};
+    const formData: FormDataType = {};
+    const compareFields: Record<string, string> = {};
 
     inputs.forEach(input => {
         const element = input.element as HTMLInputElement;
@@ -78,7 +79,7 @@ export function validateLogin(inputs: Input[]) {
     const [isFormValid, formData] = validateInputs(inputs);
 
     if (!isFormValid) {
-        GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.VALIDATE_LOGIN_FAILED, formData);
+        GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.VALIDATE_LOGIN_FAILED, formData);
     }  
 }
 
@@ -87,7 +88,7 @@ export function validateSaveInfo(inputs: Input[]) {
     const [isFormValid, formData] = validateInputs(inputs);
 
     if (!isFormValid) {
-        GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.VALIDATE_SAVEINFO_FAILED, formData);
+        GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.VALIDATE_SAVEINFO_FAILED, formData);
     }  
 }
 
@@ -96,7 +97,7 @@ export function validateSavePassword(inputs: Input[]) {
     const [isFormValid, formData] = validateInputs(inputs);
 
     if (!isFormValid) {
-        GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.VALIDATE_SAVEPASSWORD_FAILED, formData);
+        GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.VALIDATE_SAVEPASSWORD_FAILED, formData);
     }  
 }
 
@@ -105,7 +106,7 @@ export function validateSignup(inputs: Input[]) {
     const [isFormValid, formData] = validateInputs(inputs);
 
     if (!isFormValid) {
-        GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.VALIDATE_SIGNUP_FAILED, formData);
+        GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.VALIDATE_SIGNUP_FAILED, formData);
     }  
 }
 
@@ -114,7 +115,7 @@ export function validateCreateChat(inputs: Input[]) {
     const [isFormValid, formData] = validateInputs(inputs);
 
     if (!isFormValid) {
-        GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.VALIDATE_CREATECHAT_FAILED, formData);
+        GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.VALIDATE_CREATECHAT_FAILED, formData);
     }  
 }
 
@@ -123,7 +124,7 @@ export function validateSendMessage(inputs: Input[]) {
     const [isFormValid, formData] = validateInputs(inputs);
 
     if (!isFormValid) {
-        GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.VALIDATE_SENDMESSAGE_FAILED, formData);
+        GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.VALIDATE_SENDMESSAGE_FAILED, formData);
     }  
 }
 
@@ -132,7 +133,7 @@ export function validateAddChatUser(inputs: Input[]) {
     const [isFormValid, formData] = validateInputs(inputs);
 
     if (!isFormValid) {
-        GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.VALIDATE_ADDCHATUSER_FAILED, formData);
+        GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.VALIDATE_ADDCHATUSER_FAILED, formData);
     }  
 }
 
@@ -141,6 +142,6 @@ export function validateDeleteChatUser(inputs: Input[]) {
     const [isFormValid, formData] = validateInputs(inputs);
 
     if (!isFormValid) {
-        GlobalEventBus.instance.EventBus.emit(GlobalEventBus.EVENTS.VALIDATE_DELETECHATUSER_FAILED, formData);
+        GlobalEventBus.getInstance().EventBus.emit(GlobalEvents.VALIDATE_DELETECHATUSER_FAILED, formData);
     }  
 }

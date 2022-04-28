@@ -3,17 +3,19 @@ import * as Handlebars from 'handlebars';
 import Block from './block';
 import compile from './compile';
 
-const jsdom = require('jsdom');
+import jsdom from 'jsdom';
 const { JSDOM } = jsdom;
 
 const dom = new JSDOM(
     '<html><body><div id="app"></div></body></html>',
-    { url: 'http://localhost' },
-    { runScripts: 'dangerously' },
+    {
+        url: 'http://localhost',
+        runScripts: 'dangerously'
+    },
   );
 
 global.document = dom.window.document;
-global.window = dom.window;
+//global.window = document.defaultView;
 if (dom.window.document.defaultView) {
     global.DocumentFragment = dom.window.document.defaultView.DocumentFragment;
 }

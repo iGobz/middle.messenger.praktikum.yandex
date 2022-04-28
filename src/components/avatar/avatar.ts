@@ -7,7 +7,7 @@ import { config } from '../../utils/config';
 
 interface AvatarProps {
   events?: {
-    click: (e: Event) => {}
+    click: (e: Event) => void
   }
 }
 
@@ -21,8 +21,8 @@ export class Avatar extends Block {
 
   render() {
 
-    const src = User.instance.getData('avatar') 
-                ? config.resourceUrl + User.instance.getData('avatar')
+    const src = User.getInstance().getData('avatar') 
+                ? config.resourceUrl + User.getInstance().getData('avatar')
                 : this.props.icons.user;
 
     const avatarImage = new AvatarImage({

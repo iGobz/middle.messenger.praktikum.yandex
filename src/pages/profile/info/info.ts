@@ -3,7 +3,7 @@ import compile from '../../../utils/compile';
 
 import { Link, Avatar } from '../../../components';
 import { renderDOM } from '../../../utils/renderdom';
-import GlobalEventBus from '../../../utils/globaleventbus';
+import { GlobalEvents } from '../../../utils/globaleventbus';
 import User from '../../../utils/user';
 import { ModalAvatar } from '../../modals';
 import Page, { PageProps } from '../../../utils/page';
@@ -12,7 +12,7 @@ export class ProfileInfo extends Page {
   constructor(props: PageProps) {
     super('div', props);
 
-    this.g.EventBus.on(GlobalEventBus.EVENTS.USERDATA_UPDATED, this._onUserDataUpdated.bind(this));
+    this.g.EventBus.on(GlobalEvents.USERDATA_UPDATED, this._onUserDataUpdated.bind(this));
   }
 
   private _onUserDataUpdated(user: User) {
@@ -65,7 +65,7 @@ export class ProfileInfo extends Page {
       text: 'Выйти',
       events: {
         click: () => {
-            this.g.EventBus.emit(GlobalEventBus.EVENTS.ACTION_LOGOUT, '/');
+            this.g.EventBus.emit(GlobalEvents.ACTION_LOGOUT, '/');
         },
       },
     });

@@ -4,7 +4,7 @@ import compile from '../../utils/compile';
 import { Link, Input, ChatInfo } from '../../components';
 import { isValid } from '../../utils/validator';
 import { renderDOM } from '../../utils/renderdom';
-import GlobalEventBus from '../../utils/globaleventbus';
+import { GlobalEvents } from '../../utils/globaleventbus';
 import { ModalCreateChat } from '../modals';
 import User from '../../utils/user';
 import { Conversation } from '../conversation';
@@ -38,27 +38,27 @@ export class Chat extends Page {
         super('div', props);
 
         this.g.EventBus.on(
-            GlobalEventBus.EVENTS.ACTION_GETCHATS_SUCCEED,
+            GlobalEvents.ACTION_GETCHATS_SUCCEED,
             this._onGetChatsSucceed.bind(this));
         this.g.EventBus.on(
-            GlobalEventBus.EVENTS.ACTION_GETCHATTOKEN_SUCCEED,
+            GlobalEvents.ACTION_GETCHATTOKEN_SUCCEED,
             this._onGetChatTokenSucceed.bind(this));
     }
 
     private _onGetChatTokenSucceed(data: { id: number, token: string }) {
 
-        User.instance.addToken({
+        User.getInstance().addToken({
             id: data.id,
             token: data.token,
         });
 
-        this.g.EventBus.emit(GlobalEventBus.EVENTS.ACTION_CONNECTCHAT, {
-            userId: User.instance.getData('id'),
+        this.g.EventBus.emit(GlobalEvents.ACTION_CONNECTCHAT, {
+            userId: User.getInstance().getData('id'),
             chatId: data.id,
             token: data.token,
         });
 
-        this.g.EventBus.emit(GlobalEventBus.EVENTS.ACTION_GETCHATUSERS, data.id);
+        this.g.EventBus.emit(GlobalEvents.ACTION_GETCHATUSERS, data.id);
     }
 
     private _onGetChatsSucceed(xhr: XMLHttpRequest) {
@@ -88,7 +88,7 @@ export class Chat extends Page {
                         try {
                             const props = { chatId: chat.id, ...this.props };
                             const conversation = new Conversation(props);
-                            this.g.EventBus.emit(GlobalEventBus.EVENTS.ACTION_GETCHATTOKEN, chat.id);
+                            this.g.EventBus.emit(GlobalEvents.ACTION_GETCHATTOKEN, chat.id);
 
                             renderDOM('#conversation', conversation);
 

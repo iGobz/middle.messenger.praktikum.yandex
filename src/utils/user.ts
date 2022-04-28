@@ -21,15 +21,17 @@ export default class User {
 
     private _data: UserData;
 
-    static instance: User;
+    private static instance: User;
 
     constructor(data?: UserData) {
-        if (User.instance) {
-            return User.instance;
-        }
-
         this._data = data ? data : {};
-        User.instance = this;
+    }
+
+    public static getInstance(data?: UserData) {
+        if (!User.instance) {
+            User.instance = new User(data);
+        }
+        return User.instance; 
     }
 
     public setData(data: UserData) {

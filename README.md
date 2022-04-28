@@ -11,7 +11,7 @@ My Chat - проект веб мессенджера
 ## Проект в интернете
 
 Работающую версию можно просмотреть здесь:
-https://happy-brown-9be91f.netlify.app
+https://my-chat-1981.herokuapp.com/
 
 ## Макеты
 
@@ -49,6 +49,13 @@ https://www.figma.com/file/2cCGHvnNzdfwK6c4mBBDmj/%D0%AF.%D0%A7%D0%B0%D1%82?node
 - Сделаны тесты роутера, отправки запросов и компонента
 
 ##
+
+## Изменения четвертого спринта
+
+- Переход с parcel на webpack
+- Деплой в Heroku
+##
+
 
 Pull request
 [#6](https://github.com/iGobz/middle.messenger.praktikum.yandex/pull/6)

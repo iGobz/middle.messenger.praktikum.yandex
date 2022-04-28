@@ -5,10 +5,11 @@ import {
 
 import compile from '../../../utils/compile';
 import { isValid } from '../../../utils/validator';
-import GlobalEventBus from '../../../utils/globaleventbus';
+import { GlobalEvents } from '../../../utils/globaleventbus';
 import User, { UserData } from '../../../utils/user';
 import { config } from '../../../utils/config';
 import Page, { PageProps } from '../../../utils/page';
+import { FormDataType } from '../../../utils/types';
 
 export class ProfileChange extends Page {
 
@@ -17,17 +18,17 @@ export class ProfileChange extends Page {
     constructor(props: PageProps) {
         super('div', props);
         this.g.EventBus.on(
-            GlobalEventBus.EVENTS.VALIDATE_SAVEINFO_FAILED,
+            GlobalEvents.VALIDATE_SAVEINFO_FAILED,
             this._onValidateSaveInfoFailed.bind(this));
         this.g.EventBus.on(
-            GlobalEventBus.EVENTS.ACTION_SAVEINFO_FAILED,
+            GlobalEvents.ACTION_SAVEINFO_FAILED,
             this._onActionSaveInfoFailed.bind(this));
         this.g.EventBus.on(
-            GlobalEventBus.EVENTS.ACTION_SAVEINFO_SUCCEED,
+            GlobalEvents.ACTION_SAVEINFO_SUCCEED,
             this._onActionSaveInfoSucceed.bind(this));
     
         this.g.EventBus.on(
-            GlobalEventBus.EVENTS.USERDATA_UPDATED,
+            GlobalEvents.USERDATA_UPDATED,
             this._onUserDataUpdated.bind(this));
     }
 
@@ -37,7 +38,7 @@ export class ProfileChange extends Page {
         });
     }
 
-    private _onValidateSaveInfoFailed(formData: { [index: string]: any }) {
+    private _onValidateSaveInfoFailed(formData: FormDataType) {
 
         Object.keys(formData).forEach(key => {
             if (!formData[key].isValid) {
@@ -46,27 +47,27 @@ export class ProfileChange extends Page {
                 element?.previousElementSibling?.classList.add(this.props.styles['input-error']);
             }
         });
-        throw new Error('Validation Error');
+        throw new Error('Invalid field value');
     }
 
     private _onActionSaveInfoFailed(res: XMLHttpRequest) {
         const text = JSON.parse(res.responseText).reason;
         this._errorMessage.setProps({
-            'text': text,
-            'class': this.props.styles.error,
+            text: text,
+            class: this.props.styles.error,
         });
     }
 
     private _onActionSaveInfoSucceed(userData: UserData) {
 
-        const user = User.instance;
+        const user = User.getInstance();
         user.setData(userData);
 
-        this.g.EventBus.emit(GlobalEventBus.EVENTS.USERDATA_UPDATED, user);
+        this.g.EventBus.emit(GlobalEvents.USERDATA_UPDATED, user);
 
         this._errorMessage.setProps({
-            'text': 'Info saved',
-            'class': this.props.styles.error,
+            text: 'Info saved',
+            class: this.props.styles.error,
         });
     }
 
@@ -83,8 +84,8 @@ export class ProfileChange extends Page {
 
     render() {
 
-        const src = User.instance.getData('avatar')
-            ? config.resourceUrl + User.instance.getData('avatar')
+        const src = User.getInstance().getData('avatar')
+            ? config.resourceUrl + User.getInstance().getData('avatar')
             : this.props.icons.user;
 
         const avatarImage = new AvatarImage({
@@ -167,8 +168,8 @@ export class ProfileChange extends Page {
             events: {
                 click: () => {
                     this._errorMessage.setProps({
-                        'text': '',
-                        'class': `${this.props.styles.error} ${this.props.styles['error-hide']}`,
+                        text: '',
+                        class: `${this.props.styles.error} ${this.props.styles['error-hide']}`,
                     });
                     this.props.router.go('/settings');
                 },
@@ -186,16 +187,21 @@ export class ProfileChange extends Page {
                 click: (e) => {
                     e.preventDefault();
 
+                    this._errorMessage.setProps({ text: '' });
+
                     const inputs = [
                         inputEmail, inputLogin, inputFirstName, inputSecondName, inputPhone, inputDisplayName,
                     ];
 
                     try {
-                        this.g.EventBus.emit(GlobalEventBus.EVENTS.VALIDATE_SAVEINFO, inputs);
-                        this.g.EventBus.emit(GlobalEventBus.EVENTS.ACTION_SAVEINFO, inputs);
+                        this.g.EventBus.emit(GlobalEvents.VALIDATE_SAVEINFO, inputs);
+                        this.g.EventBus.emit(GlobalEvents.ACTION_SAVEINFO, inputs);
 
                     } catch (error) {
-                        console.log('Error caught', error);
+                        this._errorMessage.setProps({
+                            text: error,
+                            class: this.props.styles.error,
+                        });
                     }
                 },
             },
@@ -229,8 +235,6 @@ export class ProfileChange extends Page {
         this._errorMessage = errorMessage;
 
         return compile(tmpl, {
-            styles: this.props.styles,
-            images: this.props.images,
             avatarImage,
             labelEmail,
             labelLogin,
@@ -247,6 +251,7 @@ export class ProfileChange extends Page {
             linkProfileChangeReturn,
             errorMessage,
             buttonSave,
+            ...this.props,
         });
     }
 }
