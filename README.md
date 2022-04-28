@@ -35,6 +35,7 @@ https://www.figma.com/file/2cCGHvnNzdfwK6c4mBBDmj/%D0%AF.%D0%A7%D0%B0%D1%82?node
 Аналогично, на странице изменения пароля кнопки "Сохранить" и стрелка осуществляют возврат на страницу изменения данных.
 
 Страницы с ошибками доступа и серверными ошибками можно увидеть набрав соответственно относительные адреса "/404.html" и "/500.html" на локальном хосте или в интернет версии
+
 ## Изменения второго спринта
 
 - Перевод на TypeScript
@@ -46,6 +47,7 @@ https://www.figma.com/file/2cCGHvnNzdfwK6c4mBBDmj/%D0%AF.%D0%A7%D0%B0%D1%82?node
 
 - Работают формы авторизации, регистрации, смены настроек и пароля, отправка сообщений, работа с чатами
 - Сделаны тесты роутера, отправки запросов и компонента
+
 ##
 
 ## Изменения четвертого спринта
@@ -56,4 +58,4 @@ https://www.figma.com/file/2cCGHvnNzdfwK6c4mBBDmj/%D0%AF.%D0%A7%D0%B0%D1%82?node
 
 
 Pull request
-[#5](https://github.com/iGobz/middle.messenger.praktikum.yandex/pull/5)
+[#6](https://github.com/iGobz/middle.messenger.praktikum.yandex/pull/6)
